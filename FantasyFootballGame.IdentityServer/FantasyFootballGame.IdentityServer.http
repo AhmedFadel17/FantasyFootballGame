@@ -1,0 +1,6 @@
+@FantasyFootballGame.IdentityServer_HostAddress = http://localhost:5252
+
+GET {{FantasyFootballGame.IdentityServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
