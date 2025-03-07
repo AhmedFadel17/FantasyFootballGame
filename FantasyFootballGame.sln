@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootballGame.DataAcc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootballGame.Domain", "FantasyFootballGame.Domain\FantasyFootballGame.Domain.csproj", "{C82D13B0-D6C9-4DCB-A712-A55F3CD7A660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootballGame.Tests", "FantasyFootballGame.Tests\FantasyFootballGame.Tests.csproj", "{9CD486E2-5689-4F19-8CE9-5CC8818AA379}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FF37068-5361-4929-929B-2856E3AA4012}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,6 @@ Global
 		{C82D13B0-D6C9-4DCB-A712-A55F3CD7A660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C82D13B0-D6C9-4DCB-A712-A55F3CD7A660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C82D13B0-D6C9-4DCB-A712-A55F3CD7A660}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CD486E2-5689-4F19-8CE9-5CC8818AA379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CD486E2-5689-4F19-8CE9-5CC8818AA379}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CD486E2-5689-4F19-8CE9-5CC8818AA379}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CD486E2-5689-4F19-8CE9-5CC8818AA379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
