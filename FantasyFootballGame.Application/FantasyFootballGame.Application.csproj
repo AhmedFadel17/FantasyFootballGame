@@ -7,12 +7,33 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\FantasyTeams\" />
+    <Folder Include="DTOs\Fixtures\" />
+    <Folder Include="DTOs\GameActions\" />
+    <Folder Include="DTOs\Gameweeks\" />
+    <Folder Include="DTOs\GameweekTeams\" />
+    <Folder Include="DTOs\PlayerStats\" />
+    <Folder Include="DTOs\Players\" />
+    <Folder Include="DTOs\Teams\" />
+    <Folder Include="Interfaces\FantasyTeams\" />
+    <Folder Include="Interfaces\Fixtures\" />
+    <Folder Include="Interfaces\GameActions\" />
+    <Folder Include="Interfaces\Gameweeks\" />
+    <Folder Include="Interfaces\GameweekTeams\" />
+    <Folder Include="Interfaces\PlayerStats\" />
+    <Folder Include="Interfaces\Players\" />
+    <Folder Include="Interfaces\Teams\" />
     <Folder Include="Mapping\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
-    <Folder Include="Services\" />
+    <Folder Include="Services\FantasyTeams\" />
+    <Folder Include="Services\Fixtures\" />
+    <Folder Include="Services\GameActions\" />
+    <Folder Include="Services\Gameweeks\" />
+    <Folder Include="Services\GameweekTeams\" />
+    <Folder Include="Services\PlayerStats\" />
+    <Folder Include="Services\Players\" />
+    <Folder Include="Services\Teams\" />
   </ItemGroup>
 
   <ItemGroup>

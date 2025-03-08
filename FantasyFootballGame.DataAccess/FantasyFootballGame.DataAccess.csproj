@@ -20,4 +20,8 @@
     <Folder Include="Extentions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FantasyFootballGame.Domain\FantasyFootballGame.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
