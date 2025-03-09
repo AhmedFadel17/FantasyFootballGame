@@ -8,23 +8,17 @@
 
   <ItemGroup>
     <Folder Include="DTOs\FantasyTeams\" />
-    <Folder Include="DTOs\Fixtures\" />
     <Folder Include="DTOs\GameActions\" />
-    <Folder Include="DTOs\Gameweeks\" />
     <Folder Include="DTOs\GameweekTeams\" />
     <Folder Include="DTOs\PlayerStats\" />
     <Folder Include="Interfaces\FantasyTeams\" />
-    <Folder Include="Interfaces\Fixtures\" />
     <Folder Include="Interfaces\GameActions\" />
-    <Folder Include="Interfaces\Gameweeks\" />
     <Folder Include="Interfaces\GameweekTeams\" />
     <Folder Include="Interfaces\PlayerStats\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
     <Folder Include="Services\FantasyTeams\" />
-    <Folder Include="Services\Fixtures\" />
     <Folder Include="Services\GameActions\" />
-    <Folder Include="Services\Gameweeks\" />
     <Folder Include="Services\GameweekTeams\" />
     <Folder Include="Services\PlayerStats\" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace FantasyFootballGame.Application.DTOs.Players
 {
@@ -11,6 +12,7 @@ namespace FantasyFootballGame.Application.DTOs.Players
         public double Price { get; set; }
         public int ShirtNumber { get; set; }
         public PlayerPosition Position { get; set; }
+        public PlayerStatus Status { get; set; }
         public int TeamId { get; set; }
         public Team Team { get; set; }
     }

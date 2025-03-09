@@ -19,6 +19,8 @@ namespace FantasyFootballGame.Application.DTOs.Players
 
         public PlayerPosition Position { get; set; }
 
+        public PlayerStatus Status { get; set; }
+
         public int TeamId { get; set; }
     }
 }

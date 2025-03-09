@@ -13,7 +13,7 @@ namespace FantasyFootballGame.Domain.Models
         public int ShirtNumber { get; set; }
         public PlayerPosition Position { get; set; }
         public int TeamId { get; set; }
-
+        public PlayerStatus Status { get; set; } = PlayerStatus.Available;
         [JsonIgnore]
         public Team Team { get; set; }
     }

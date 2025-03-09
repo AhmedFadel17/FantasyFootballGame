@@ -30,6 +30,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Route("by-name")]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
             var player = await _service.GetByName(name);
@@ -37,6 +38,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Route("by-price")]
         public async Task<IActionResult> GetByPrice([FromQuery] double min,double max)
         {
             var player = await _service.GetByPrice(min,max);
