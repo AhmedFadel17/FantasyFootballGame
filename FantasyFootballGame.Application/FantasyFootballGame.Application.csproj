@@ -13,17 +13,12 @@
     <Folder Include="DTOs\Gameweeks\" />
     <Folder Include="DTOs\GameweekTeams\" />
     <Folder Include="DTOs\PlayerStats\" />
-    <Folder Include="DTOs\Players\" />
-    <Folder Include="DTOs\Teams\" />
     <Folder Include="Interfaces\FantasyTeams\" />
     <Folder Include="Interfaces\Fixtures\" />
     <Folder Include="Interfaces\GameActions\" />
     <Folder Include="Interfaces\Gameweeks\" />
     <Folder Include="Interfaces\GameweekTeams\" />
     <Folder Include="Interfaces\PlayerStats\" />
-    <Folder Include="Interfaces\Players\" />
-    <Folder Include="Interfaces\Teams\" />
-    <Folder Include="Mapping\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
     <Folder Include="Services\FantasyTeams\" />
@@ -32,12 +27,16 @@
     <Folder Include="Services\Gameweeks\" />
     <Folder Include="Services\GameweekTeams\" />
     <Folder Include="Services\PlayerStats\" />
-    <Folder Include="Services\Players\" />
-    <Folder Include="Services\Teams\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FantasyFootballGame.DataAccess\FantasyFootballGame.DataAccess.csproj" />
+    <ProjectReference Include="..\FantasyFootballGame.Domain\FantasyFootballGame.Domain.csproj" />
   </ItemGroup>
 
 </Project>

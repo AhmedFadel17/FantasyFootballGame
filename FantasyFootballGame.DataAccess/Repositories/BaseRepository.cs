@@ -5,17 +5,19 @@ namespace FantasyFootballGame.DataAccess.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+        private readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
         public BaseRepository(AppDbContext context)
         {
-            _dbSet = context.Set<T>();
+            _context = context;
+            _dbSet = _context.Set<T>();
         }
-        public async void Create(T entity)
+        public async Task Create(T entity)
         {
             await _dbSet.AddAsync(entity);
         }
 
-        public void DeleteById(T entity)
+        public void Delete(T entity)
         {
             _dbSet.Remove(entity);
         }
@@ -30,9 +32,15 @@ namespace FantasyFootballGame.DataAccess.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public void UpdateById(T entity)
+        public void Update(T entity)
         {
             _dbSet.Update(entity);
+            _context.SaveChangesAsync();
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }
