@@ -18,5 +18,13 @@ namespace FantasyFootballGame.Domain.Models.Actions
         [JsonIgnore]
         public Fixture Fixture { get; set; }
 
+        [JsonIgnore]
+        public GoalScored? GoalScored { get; set; }
+
+        [JsonIgnore]
+        public Assist? Assist { get; set; }
+
+        [JsonIgnore]
+        public OwnGoal? ownGoal { get; set; }
     }
 }

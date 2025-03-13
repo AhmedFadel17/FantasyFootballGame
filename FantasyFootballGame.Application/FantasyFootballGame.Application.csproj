@@ -7,17 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\FantasyTeams\" />
     <Folder Include="DTOs\GameActions\" />
     <Folder Include="DTOs\GameweekTeams\" />
     <Folder Include="DTOs\PlayerStats\" />
-    <Folder Include="Interfaces\FantasyTeams\" />
     <Folder Include="Interfaces\GameActions\" />
     <Folder Include="Interfaces\GameweekTeams\" />
     <Folder Include="Interfaces\PlayerStats\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
-    <Folder Include="Services\FantasyTeams\" />
     <Folder Include="Services\GameActions\" />
     <Folder Include="Services\GameweekTeams\" />
     <Folder Include="Services\PlayerStats\" />
@@ -25,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
   </ItemGroup>
 

@@ -1,5 +1,7 @@
 ﻿using FantasyFootballGame.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System.Linq.Expressions;
 
 namespace FantasyFootballGame.DataAccess.Repositories
 {
@@ -38,9 +40,16 @@ namespace FantasyFootballGame.DataAccess.Repositories
             _context.SaveChangesAsync();
         }
 
+        public async Task<bool> Exists(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();
         }
+
+
     }
 }
