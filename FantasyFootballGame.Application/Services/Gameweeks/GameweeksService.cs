@@ -6,11 +6,11 @@ using FantasyFootballGame.Domain.Models;
 
 namespace FantasyFootballGame.Application.Services.Gameweeks
 {
-    public class GameweekService : IGameweeksService
+    public class GameweeksService : IGameweeksService
     {
         private readonly IGameweeksRepository _repo;
         private readonly IMapper _mapper;
-        public GameweekService(IGameweeksRepository repository,IMapper mapper)
+        public GameweeksService(IGameweeksRepository repository,IMapper mapper)
         {
             _mapper = mapper;
             _repo = repository;

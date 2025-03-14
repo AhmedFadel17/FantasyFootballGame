@@ -9,6 +9,5 @@ namespace FantasyFootballGame.Application.Interfaces.FantasyTeams
         Task<FantasyTeamResponseDto> Update(int id, UpdateFantasyTeamDto dto);
         Task<FantasyTeamResponseDto> Create(CreateFantasyTeamDto dto);
         Task Delete(int id);
-        Task MakeTransfers(MakeTransfersDto dto);
     }
 }

@@ -11,12 +11,10 @@
     <Folder Include="DTOs\GameweekTeams\" />
     <Folder Include="DTOs\PlayerStats\" />
     <Folder Include="Interfaces\GameActions\" />
-    <Folder Include="Interfaces\GameweekTeams\" />
     <Folder Include="Interfaces\PlayerStats\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
     <Folder Include="Services\GameActions\" />
-    <Folder Include="Services\GameweekTeams\" />
     <Folder Include="Services\PlayerStats\" />
     <Folder Include="Validators\Goals\" />
   </ItemGroup>
