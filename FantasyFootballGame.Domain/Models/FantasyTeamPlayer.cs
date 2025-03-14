@@ -7,14 +7,13 @@ namespace FantasyFootballGame.Domain.Models
     {
         public int Id { get; set; }
         public int PlayerId { get; set; }
-        public int GameweekTeamId { get; set; }
-        public bool IsBenched { get; set; }
+        public int FantasyTeamId { get; set; }
         public PlayerSlot Slot {  get; set; }
         
         [JsonIgnore]
         public Player Player { get; set; }
 
         [JsonIgnore]
-        public GameweekTeam GameweekTeam { get; set; }
+        public FantasyTeam FantasyTeam { get; set; }
     }
 }

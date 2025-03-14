@@ -18,6 +18,7 @@
     <Folder Include="Services\GameActions\" />
     <Folder Include="Services\GameweekTeams\" />
     <Folder Include="Services\PlayerStats\" />
+    <Folder Include="Validators\Goals\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -44,6 +44,10 @@ namespace FantasyFootballGame.DataAccess.Repositories
         {
             return await _dbSet.AnyAsync(predicate);
         }
+        public async Task<IEnumerable<T>> GetByIds(List<int> ids) 
+        {
+            return await _dbSet.Where(entity => ids.Contains(EF.Property<int>(entity, "Id"))).ToListAsync();
+        }
 
         public async Task Save()
         {

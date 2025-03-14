@@ -2,7 +2,7 @@
 using FantasyFootballGame.DataAccess.Repositories.Teams;
 using FluentValidation;
 
-namespace FantasyFootballGame.Application.Validators
+namespace FantasyFootballGame.Application.Validators.Players
 {
     public class CreatePlayerValidator : AbstractValidator<CreatePlayerDto>
     {

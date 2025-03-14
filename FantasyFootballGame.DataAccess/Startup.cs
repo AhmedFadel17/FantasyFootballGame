@@ -16,6 +16,7 @@ using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
+using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.DataAccess.Repositories.PlayersStats;
@@ -54,6 +55,8 @@ namespace FantasyFootballGame.DataAccess
             services.AddScoped<IYellowCardsRepository,YellowCardsRepository>();
             services.AddScoped<ISavesRepository,SavesRepository>();
             services.AddScoped<IFanatsyTeamPlayersRepository,FantasyTeamPlayerRepository>();
+            services.AddScoped<IGameweekTeamPlayersRepository,GameweekTeamPlayersRepository>();
+
             return Task.FromResult(services);
         }
 

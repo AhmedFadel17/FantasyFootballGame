@@ -9,6 +9,7 @@ using FantasyFootballGame.Application.DTOs.Goals.GoalsScored;
 using FantasyFootballGame.Application.DTOs.Goals.OwnGoals;
 using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.DTOs.Teams;
+using FantasyFootballGame.Application.DTOs.Transfers;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions;
 
@@ -35,13 +36,20 @@ namespace FantasyFootballGame.Application.Mapping
             CreateMap<UpdatePlayerDto, Player>();
 
             CreateMap<FantasyTeam, FantasyTeamResponseDto>();
-            CreateMap<CreateFantasyTeamDto, FantasyTeam>();
+            CreateMap<(double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()
+                .ForMember(dest => dest.SquadValue, opt => opt.MapFrom(src => src.squadValue))
+                .ForMember(dest => dest.InTheBank, opt => opt.MapFrom(src => src.inTheBank));
             CreateMap<UpdateFantasyTeamDto, FantasyTeam>();
 
             CreateMap<FantasyTeamPlayer, FantasyTeamPlayerResponseDto>();
             CreateMap<(int teamId,CreateFantasyTeamPlayerDto), FantasyTeamPlayer>()
-                .ForMember(dest => dest.GameweekTeamId,opt =>opt.MapFrom(src => src.teamId));
+                .ForMember(dest => dest.FantasyTeamId,opt =>opt.MapFrom(src => src.teamId));
             CreateMap<UpdateFantasyTeamPlayerDto, FantasyTeamPlayer>();
+
+            CreateMap<(int fantasyTeamId,int gameweekId, CreateTransferDto), Transfer>()
+                .ForMember(dest => dest.FantasyTeamId, opt => opt.MapFrom(src => src.fantasyTeamId))
+                .ForMember(dest => dest.GameweekId, opt => opt.MapFrom(src => src.gameweekId));
+
 
             CreateMap<Goal, GoalResponseDto>();
             CreateMap<CreateGoalDto, Goal>();

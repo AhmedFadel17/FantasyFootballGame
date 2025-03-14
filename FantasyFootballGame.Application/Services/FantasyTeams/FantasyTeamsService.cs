@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.FantasyTeamPlayers;
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.Interfaces.FantasyTeams;
+using FantasyFootballGame.Application.Interfaces.GameweekTeams;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
+using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.Domain.Models;
 
 namespace FantasyFootballGame.Application.Services.FantasyTeams
@@ -10,31 +13,44 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
     public class FantasyTeamsService : IFantasyTeamsService
     {
         private readonly IFantasyTeamsRepository _teamsRepo;
-        private readonly IFanatsyTeamPlayersRepository _playersRepo;
+        private readonly IFanatsyTeamPlayersRepository _fantasyPlayersRepo;
+        private readonly IPlayersRepository _playersRepo;
         private readonly IMapper _mapper;
-        public FantasyTeamsService(IFantasyTeamsRepository teamsRepository,IFanatsyTeamPlayersRepository playersRepository,IMapper mapper)
+        private readonly IGameweekTeamsService _gameweekTeamsService;
+        public FantasyTeamsService(
+            IFantasyTeamsRepository teamsRepository,
+            IFanatsyTeamPlayersRepository fantasyPlayerRepo,
+            IPlayersRepository playersRepository,
+            IGameweekTeamsService gameweekTeamsService,
+            IMapper mapper)
         {
             _mapper = mapper;
             _teamsRepo = teamsRepository; 
+            _fantasyPlayersRepo = fantasyPlayerRepo;
             _playersRepo = playersRepository;
+            _gameweekTeamsService = gameweekTeamsService;
         }
 
         public async Task<FantasyTeamResponseDto> Create(CreateFantasyTeamDto dto)
         {
-            var pCount = 15;
             var players = dto.Players;
-            if (players.Count != 15) throw new ArgumentException($"Players must be {pCount}");
-            var team = _mapper.Map<FantasyTeam>(dto);
+            var teamValue=await CalculateTeamValue(players);
+            var team = _mapper.Map<FantasyTeam>((teamValue.squadValue,teamValue.inTheBank,dto));
+
             await _teamsRepo.Create(team);
             await _teamsRepo.Save();
+
             foreach (var playerDto in players)
             {
-                var player = _mapper.Map<FantasyTeamPlayer>((team.Id,playerDto));
-                await _playersRepo.Create(player);
+                var player = _mapper.Map<FantasyTeamPlayer>((team.Id, playerDto));
+                await _fantasyPlayersRepo.Create(player);
             }
-            await _playersRepo.Save();
+
+            await _fantasyPlayersRepo.Save();
+            await _gameweekTeamsService.Create(team.Id);
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
+
 
         public async Task Delete(int id)
         {
@@ -51,10 +67,7 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        public Task MakeTransfers(MakeTransfersDto dto)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<FantasyTeamResponseDto> Update(int id, UpdateFantasyTeamDto dto)
         {
@@ -65,5 +78,16 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             await _teamsRepo.Save();
             return _mapper.Map<FantasyTeamResponseDto>(updatedTeam);
         }
+
+        private async Task<(double squadValue, double inTheBank)> CalculateTeamValue(List<CreateFantasyTeamPlayerDto> players)
+        {
+            var budget = 100;
+            var playerIds = players.Select(p => p.PlayerId).ToList();
+            var playersData = await _playersRepo.GetByIds(playerIds);
+            double squadValue = playersData.Sum(p => p.Price);
+            double inTheBank = budget - squadValue;
+            return (squadValue, inTheBank);
+        }
+
     }
 }
