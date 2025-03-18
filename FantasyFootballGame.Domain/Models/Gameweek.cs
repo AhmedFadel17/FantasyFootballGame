@@ -16,6 +16,8 @@ namespace FantasyFootballGame.Domain.Models
 
         public DateTime Deadline { get; set; }
 
+        public bool IsCurrent {  get; set; } = false;
+
         [JsonIgnore]
         public IEnumerable<Fixture>? Fixtures { get; set; }
 

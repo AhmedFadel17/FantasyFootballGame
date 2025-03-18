@@ -10,6 +10,7 @@ namespace FantasyFootballGame.Domain.Models.Actions
         public string Description { get; set; }
         public PlayerInjuryLevel Level { get; set; }
         public DateTime EndDate { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [JsonIgnore]
         public Player Player { get; set; }

@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Domain.Models;
+﻿using FantasyFootballGame.Application.DTOs.GameweekTeams;
+using FantasyFootballGame.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace FantasyFootballGame.Application.Interfaces.GameweekTeams
     public interface IGameweekTeamsService
     {
         Task<GameweekTeam> Create(int fantasyTeamId);
+        Task Swap(SwapPlayersDto dto);
+
 
     }
 }

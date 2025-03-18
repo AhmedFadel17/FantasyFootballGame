@@ -1,4 +1,4 @@
-﻿using FantasyFootballGame.Domain.Models.Actions;
+﻿using FantasyFootballGame.Domain.Models.Actions.Penalties;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Actions.Penalties
 {

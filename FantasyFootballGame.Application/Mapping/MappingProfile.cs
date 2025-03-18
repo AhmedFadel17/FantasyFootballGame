@@ -2,16 +2,26 @@
 using FantasyFootballGame.Application.DTOs.FantasyTeamPlayers;
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.DTOs.Fixtures;
+using FantasyFootballGame.Application.DTOs.GameActions.BonusPoints;
+using FantasyFootballGame.Application.DTOs.GameActions.BonusPoints.IndvidualBonusPoints;
+using FantasyFootballGame.Application.DTOs.GameActions.Cards;
+using FantasyFootballGame.Application.DTOs.GameActions.Goals;
+using FantasyFootballGame.Application.DTOs.GameActions.Goals.Assists;
+using FantasyFootballGame.Application.DTOs.GameActions.Goals.GoalsScored;
+using FantasyFootballGame.Application.DTOs.GameActions.Goals.OwnGoals;
+using FantasyFootballGame.Application.DTOs.GameActions.Injuries;
+using FantasyFootballGame.Application.DTOs.GameActions.Penalties;
+using FantasyFootballGame.Application.DTOs.GameActions.Penalties.PenaltiesMissed;
+using FantasyFootballGame.Application.DTOs.GameActions.Penalties.PenaltiesSaves;
+using FantasyFootballGame.Application.DTOs.GameActions.Saves;
 using FantasyFootballGame.Application.DTOs.Gameweeks;
-using FantasyFootballGame.Application.DTOs.Goals;
-using FantasyFootballGame.Application.DTOs.Goals.Assists;
-using FantasyFootballGame.Application.DTOs.Goals.GoalsScored;
-using FantasyFootballGame.Application.DTOs.Goals.OwnGoals;
 using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.DTOs.Teams;
 using FantasyFootballGame.Application.DTOs.Transfers;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions;
+using FantasyFootballGame.Domain.Models.Actions.Goals;
+using FantasyFootballGame.Domain.Models.Actions.Penalties;
 
 namespace FantasyFootballGame.Application.Mapping
 {
@@ -72,6 +82,36 @@ namespace FantasyFootballGame.Application.Mapping
             CreateMap<(int goalId, CreateAssistDto), Assist>()
                 .ForMember(dest => dest.GoalId, opt => opt.MapFrom(src => src.goalId));
             CreateMap<UpdateAssistDto, Assist>();
+
+            CreateMap<Card,CardResponseDto>();
+            CreateMap<CreateCardDto,Card>();
+            CreateMap<UpdateCardDto, Card>();
+
+            CreateMap<Injury, InjuryResponseDto>();
+            CreateMap<CreateInjuryDto, Injury>();
+            CreateMap<UpdateInjuryDto, Injury>();
+
+            CreateMap<Save, SaveResponseDto>();
+            CreateMap<CreateSaveDto, Save>();
+            CreateMap<UpdateSaveDto, Save>();
+
+            CreateMap<PenaltySave, PenaltySaveResponseDto>();
+            CreateMap<CreatePenaltySaveDto, PenaltySave>();
+            CreateMap<UpdatePenaltySaveDto, PenaltySave>();
+
+            CreateMap<PenaltyMiss, PenaltyMissedResponseDto>();
+            CreateMap<CreatePenaltyMissedDto, PenaltyMiss>();
+            CreateMap<UpdatePenaltyMissedDto, PenaltyMiss>();
+
+            CreateMap<Penalty, PenaltyResponseDto>();
+            CreateMap<CreatePenaltyDto, Penalty>();
+            CreateMap<UpdatePenaltyDto, Penalty>();
+
+            CreateMap<CreateBonusPointDto, Bonus>();
+            CreateMap<Bonus, BonusPointResponseDto>();
+            CreateMap<CreateBonusPointsDto, BonusPointsResponseDto>()
+                .ForMember(dest => dest.BonusPoints, opt => opt.Ignore());
+
         }
     }
 }

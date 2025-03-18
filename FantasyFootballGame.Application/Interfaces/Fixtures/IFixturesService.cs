@@ -8,6 +8,8 @@ namespace FantasyFootballGame.Application.Interfaces.Fixtures
         Task<FixtureResponseDto> GetById(int id);
         Task<FixtureResponseDto> Update(int id, UpdateFixtureDto dto);
         Task<FixtureResponseDto> Create(CreateFixtureDto dto);
+        Task AddGoal(int fixtureId, int teamId);
+        Task CancelGoal(int fixtureId, int teamId);
         Task Delete(int id);
     }
 }

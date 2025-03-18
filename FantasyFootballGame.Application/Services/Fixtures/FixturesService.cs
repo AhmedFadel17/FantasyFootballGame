@@ -58,5 +58,25 @@ namespace FantasyFootballGame.Application.Services.Fixtures
             await _repo.Save();
             return _mapper.Map<FixtureResponseDto>(updatedFixture);
         }
+
+        public async Task AddGoal(int fixtureId,int teamId)
+        {
+            var fixture = await _repo.GetById(fixtureId);
+            if (fixture == null) throw new KeyNotFoundException("Fixture not found");
+            if (fixture.HomeTeamId == teamId) fixture.HomeTeamScore += 1;
+            if (fixture.AwayTeamId == teamId) fixture.AwayTeamScore += 1;
+            _repo.Update(fixture);
+            await _repo.Save();
+        }
+
+        public async Task CancelGoal(int fixtureId, int teamId)
+        {
+            var fixture = await _repo.GetById(fixtureId);
+            if (fixture == null) throw new KeyNotFoundException("Fixture not found");
+            if (fixture.HomeTeamId == teamId) fixture.HomeTeamScore -= 1;
+            if (fixture.AwayTeamId == teamId) fixture.AwayTeamScore -= 1;
+            _repo.Update(fixture);
+            await _repo.Save();
+        }
     }
 }

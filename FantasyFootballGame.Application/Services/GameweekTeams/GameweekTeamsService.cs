@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Application.Interfaces.GameweekTeams;
+﻿using FantasyFootballGame.Application.DTOs.GameweekTeams;
+using FantasyFootballGame.Application.Interfaces.GameweekTeams;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
@@ -59,6 +60,40 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
 
             await _fanatsyTeamPlayersRepository.Save();
             return gameweekTeam;
+        }
+
+        public async Task Swap(SwapPlayersDto dto)
+        {
+            var swaps = dto.Swaps;
+            var gameweekTeamId = dto.GameweekTeamId;
+            var currentGameweek = await _gameweeksRepo.GetCurrentGameweek();
+            if (currentGameweek == null)
+                throw new Exception("No active gameweek found");
+            var gameweekTeam = await _gameweekTeamsRepo.GetCurrentGameweekTeam(gameweekTeamId, currentGameweek.Id);
+            foreach (var swap in swaps)
+            {
+                var playerOutId = swap.PlayerOutId;
+                var playerInId = swap.PlayerInId;
+                var gameweekPlayerOut = await _fanatsyTeamPlayersRepository.GetPlayerFromTeam(gameweekTeam.Id, playerOutId);
+                var gameweekPlayerIn = await _fanatsyTeamPlayersRepository.GetPlayerFromTeam(gameweekTeam.Id, playerInId);
+                gameweekPlayerOut.IsStarting = false;
+                if (gameweekPlayerOut.IsCaptain)
+                {
+                    gameweekPlayerIn.IsCaptain = true;
+                    gameweekPlayerOut.IsCaptain = false;
+                }
+
+                if (gameweekPlayerOut.IsViceCaptain)
+                {
+                    gameweekPlayerIn.IsViceCaptain = true;
+                    gameweekPlayerOut.IsViceCaptain = false;
+                }
+
+                _fanatsyTeamPlayersRepository.Update(gameweekPlayerOut);
+                _fanatsyTeamPlayersRepository.Update(gameweekPlayerIn);
+            }
+
+            await _fanatsyTeamPlayersRepository.Save();
         }
     }
 }

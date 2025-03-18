@@ -25,11 +25,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
                 .MustAsync(async (id, cancellation) => await fantasyTeamsRepository.Exists(t => t.Id == id))
                 .WithMessage("The specified FantasyTeamId does not exist.");
 
-            RuleFor(t => t.GameweekId)
-                .MustAsync(async (id, cancellation) => await gameweeksRepository.Exists(t => t.Id == id))
-                .WithMessage("The specified GameweekId does not exist.");
-
-            RuleFor(t => t.transfers)
+            RuleFor(t => t.Transfers)
                 .NotNull().WithMessage("Transfers list cannot be null.")
                 .NotEmpty().WithMessage("At least one transfer is required.")
                 .ForEach(transfer => transfer.SetValidator(transferValidator));
@@ -54,7 +50,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
 
             var playerIdsInTeam = team.Players.Select(p => p.PlayerId).ToHashSet();
 
-            foreach (var transfer in dto.transfers)
+            foreach (var transfer in dto.Transfers)
             {
                 if (!playerIdsInTeam.Contains(transfer.PlayerOutId))
                 {
@@ -77,7 +73,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
             var playerIdsInTeam = team.Players.Select(p => p.PlayerId).ToList();
 
             // Simulate transfers: Remove outgoing players, add incoming players
-            foreach (var transfer in dto.transfers)
+            foreach (var transfer in dto.Transfers)
             {
                 playerIdsInTeam.Remove(transfer.PlayerOutId);
                 playerIdsInTeam.Add(transfer.PlayerInId);
@@ -93,8 +89,8 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
 
         private bool NoDuplicateTransfers(MakeTransfersDto dto)
         {
-            var playerInIds = dto.transfers.Select(t => t.PlayerInId).ToList();
-            var playerOutIds = dto.transfers.Select(t => t.PlayerOutId).ToList();
+            var playerInIds = dto.Transfers.Select(t => t.PlayerInId).ToList();
+            var playerOutIds = dto.Transfers.Select(t => t.PlayerOutId).ToList();
 
             return playerInIds.Distinct().Count() == playerInIds.Count &&
                    playerOutIds.Distinct().Count() == playerOutIds.Count;

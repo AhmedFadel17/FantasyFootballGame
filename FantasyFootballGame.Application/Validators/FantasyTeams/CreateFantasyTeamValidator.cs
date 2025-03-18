@@ -68,10 +68,10 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
             var playerPosition = await GetPlayerPosition(player.PlayerId);
             return player.Slot switch
             {
-                PlayerSlot.Gk1 or PlayerSlot.Gk2 => playerPosition == PlayerPosition.Gk,
-                PlayerSlot.Def1 or PlayerSlot.Def2 or PlayerSlot.Def3 or PlayerSlot.Def4 or PlayerSlot.Def5 => playerPosition == PlayerPosition.Def,
-                PlayerSlot.Mid1 or PlayerSlot.Mid2 or PlayerSlot.Mid3 or PlayerSlot.Mid4 or PlayerSlot.Mid5 => playerPosition == PlayerPosition.Mid,
-                PlayerSlot.Frw1 or PlayerSlot.Frw2 or PlayerSlot.Frw3 => playerPosition == PlayerPosition.Frw,
+                PlayerSlot.Gk1 or PlayerSlot.Gk2 => playerPosition == PlayerPosition.Goalkeeper,
+                PlayerSlot.Def1 or PlayerSlot.Def2 or PlayerSlot.Def3 or PlayerSlot.Def4 or PlayerSlot.Def5 => playerPosition == PlayerPosition.Defender,
+                PlayerSlot.Mid1 or PlayerSlot.Mid2 or PlayerSlot.Mid3 or PlayerSlot.Mid4 or PlayerSlot.Mid5 => playerPosition == PlayerPosition.Midfielder,
+                PlayerSlot.Frw1 or PlayerSlot.Frw2 or PlayerSlot.Frw3 => playerPosition == PlayerPosition.Forward,
                 _ => false
             };
         }

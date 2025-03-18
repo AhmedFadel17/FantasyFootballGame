@@ -1,6 +1,6 @@
 ﻿using FantasyFootballGame.DataAccess.Data;
 using FantasyFootballGame.Domain.Models;
-using FantasyFootballGame.Domain.Models.Actions;
+using FantasyFootballGame.Domain.Models.Actions.Goals;
 using Microsoft.EntityFrameworkCore;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Actions.Goals

@@ -14,5 +14,12 @@ namespace FantasyFootballGame.DataAccess.Repositories.GameweekTeams
         {
             return await _dbSet.Where(t => t.GameweekId == gameweekId && t.FantasyTeamId == fantasyTeamId).FirstAsync();
         }
+
+        public async Task<bool> IsCurrentGameweekTeam(int gameweekTeamId)
+        {
+            return await _dbSet
+                .AnyAsync(gt => gt.Id == gameweekTeamId &&
+                                gt.Gameweek.IsCurrent);
+        }
     }
 }

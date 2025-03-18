@@ -25,6 +25,28 @@ using FantasyFootballGame.Application.Validators.Transfers;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using FantasyFootballGame.Application.Validators.FantasyTeamPlayers;
+using FantasyFootballGame.Application.Validators.Swaps;
+using FantasyFootballGame.Application.Services.GameActions.Goals;
+using FantasyFootballGame.Application.Interfaces.GameActions.Goals;
+using FantasyFootballGame.Application.Validators.GameActions.Goals;
+using FantasyFootballGame.Application.Validators.GameActions.Goals.Assists;
+using FantasyFootballGame.Application.Validators.GameActions.Goals.GoalScored;
+using FantasyFootballGame.Application.Validators.GameActions.Goals.OwnGoals;
+using FantasyFootballGame.Application.Interfaces.GameActions.Cards;
+using FantasyFootballGame.Application.Services.GameActions.Cards;
+using FantasyFootballGame.Application.Validators.GameActions.Cards;
+using FantasyFootballGame.Application.Interfaces.GameActions.BonusPoints;
+using FantasyFootballGame.Application.Services.GameActions.BonusPoints;
+using FantasyFootballGame.Application.Validators.GameActions.BonusPoints;
+using FantasyFootballGame.Application.Validators.GameActions.BonusPoints.IndividualBonus;
+using FantasyFootballGame.Application.Services.GameActions.Injuries;
+using FantasyFootballGame.Application.Interfaces.GameActions.Injuries;
+using FantasyFootballGame.Application.Validators.GameActions.Injuries;
+using FantasyFootballGame.Application.Validators.GameActions.Saves;
+using FantasyFootballGame.Application.Interfaces.GameActions.Saves;
+using FantasyFootballGame.Application.Services.GameActions.Saves;
+using FantasyFootballGame.Application.Interfaces.GameActions.Penalties;
+using FantasyFootballGame.Application.Services.GameActions.Penalties;
 
 namespace FantasyFootballGame.Application
 {
@@ -54,10 +76,52 @@ namespace FantasyFootballGame.Application
             services.AddValidatorsFromAssemblyContaining<CreateGameweekValidator>();
             services.AddValidatorsFromAssemblyContaining<UpdateGameweekValidator>();
 
-            services.AddValidatorsFromAssemblyContaining<CreateGameweekTeamValidator>();
-            services.AddValidatorsFromAssemblyContaining<UpdateGameweekTeamValidator>();
+            // Swaps
+            services.AddValidatorsFromAssemblyContaining<SwapPlayersValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateSwapValidator>();
 
+            // Transfers
             services.AddValidatorsFromAssemblyContaining<CreateTransferValidator>();
+
+            // Goals
+            services.AddValidatorsFromAssemblyContaining<CreateGoalValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateGoalValidator>();
+
+            services.AddValidatorsFromAssemblyContaining<CreateGoalScoredValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateGoalScoredValidator>();
+
+            services.AddValidatorsFromAssemblyContaining<CreateAssistValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateAssistValidator>();
+
+            services.AddValidatorsFromAssemblyContaining<CreateOwnGoalValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateOwnGoalValidator>();
+
+            // Penalties
+            services.AddValidatorsFromAssemblyContaining<CreatePenaltyValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdatePenaltyValidator>();
+
+            services.AddValidatorsFromAssemblyContaining<CreatePenaltyMissedValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdatePenaltyMissedValidator>();
+
+            services.AddValidatorsFromAssemblyContaining<CreatePenaltySaveValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdatePenaltySaveValidator>();
+
+            // Cards
+            services.AddValidatorsFromAssemblyContaining<CreateCardValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateCardValidator>();
+
+            // Saves
+            services.AddValidatorsFromAssemblyContaining<CreateSaveValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateSaveValidator>();
+
+            // Injuries
+            services.AddValidatorsFromAssemblyContaining<CreateInjuryValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateInjuryValidator>();
+
+            // Bonus Points
+            services.AddValidatorsFromAssemblyContaining<CreateBonusPointsValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateBonusPointsValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateBonusValidator>();
 
 
             // ✅ Register All Services
@@ -68,6 +132,21 @@ namespace FantasyFootballGame.Application
             services.AddScoped<IGameweeksService, GameweeksService>();
             services.AddScoped<IGameweekTeamsService, GameweekTeamsService>();
             services.AddScoped<ITransfersService, TransfersService>();
+            //Goals
+            services.AddScoped<IGoalsService,GoalsService>();
+            services.AddScoped<IAssistsService, AssistsService>();
+            services.AddScoped<IGoalScoredService,GoalScoredService>();
+            services.AddScoped<IOwnGoalsService,OwnGoalsService>();
+
+            // Penalties
+            services.AddScoped<IPenaltiesService , PenaltiesService>();
+            services.AddScoped<IPenaltiesSavesService , PenaltiesSavesService>();
+            services.AddScoped<IPenaltiesMissedService , PenaltiesMissedService>();
+
+            services.AddScoped<ICardsService,CardsService>();
+            services.AddScoped<ISavesService, SavesService>();
+            services.AddScoped<IInjuriesService, InjuriesService>();
+            services.AddScoped<IBonusPointsService, BonusPointsService>();
 
             return Task.FromResult(services);
         }

@@ -37,7 +37,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
         }
         public async Task Create(MakeTransfersDto dto)
         {
-            var transfers = dto.transfers;
+            var transfers = dto.Transfers;
             var fantasyTeamId = dto.FantasyTeamId;
             var currentGameweek = await _gameweeksRepository.GetCurrentGameweek();
             if (currentGameweek == null)
