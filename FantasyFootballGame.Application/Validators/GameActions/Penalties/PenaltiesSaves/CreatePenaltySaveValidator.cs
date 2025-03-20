@@ -49,6 +49,5 @@ public class CreatePenaltySaveValidator : AbstractValidator<CreatePenaltySaveDto
                     return !await penaltiesRepository.Exists(p => p.Id == penaltyId);
                 })
                 .WithMessage("A missed penalty already exists for this PenaltyId.");
-        }
     }
 }

@@ -11,12 +11,12 @@ namespace FantasyFootballGame.Domain.Models.Actions
         public int GameweekId { get; set; }
 
         [JsonIgnore]
-        public Player PlayerIn { get; set; }
+        public Player? PlayerIn { get; set; }
         [JsonIgnore]
-        public Player PlayerOut { get; set; }
+        public Player? PlayerOut { get; set; }
         [JsonIgnore]
-        public FantasyTeam FantasyTeam { get; set; }
+        public FantasyTeam? FantasyTeam { get; set; }
         [JsonIgnore]
-        public Gameweek Gameweek { get; set; }
+        public Gameweek? Gameweek { get; set; }
     }
 }

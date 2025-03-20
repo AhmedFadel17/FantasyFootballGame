@@ -14,12 +14,12 @@ namespace FantasyFootballGame.Domain.Models
         public int Points { get; set; }
 
         [JsonIgnore]
-        public GameweekTeam GameweekTeam { get; set; }
+        public GameweekTeam? GameweekTeam { get; set; }
 
         [JsonIgnore]
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
 
         [JsonIgnore]
-        public FantasyTeamPlayer FantasyTeamPlayer { get; set; }
+        public FantasyTeamPlayer? FantasyTeamPlayer { get; set; }
     }
 }

@@ -11,7 +11,6 @@ using FantasyFootballGame.DataAccess.Repositories.Actions.PenaltiesMissed;
 using FantasyFootballGame.DataAccess.Repositories.Actions.PenaltiesSaves;
 using FantasyFootballGame.DataAccess.Repositories.Actions.RedCards;
 using FantasyFootballGame.DataAccess.Repositories.Actions.Saves;
-using FantasyFootballGame.DataAccess.Repositories.Actions.YellowCards;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;

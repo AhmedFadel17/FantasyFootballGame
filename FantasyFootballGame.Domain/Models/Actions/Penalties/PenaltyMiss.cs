@@ -9,8 +9,8 @@ namespace FantasyFootballGame.Domain.Models.Actions.Penalties
         public int PenaltyId { get; set; }
 
         [JsonIgnore]
-        public Penalty Penalty { get; set; }
+        public Penalty? Penalty { get; set; }
         [JsonIgnore]
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
     }
 }

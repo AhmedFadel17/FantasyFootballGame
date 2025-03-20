@@ -13,10 +13,10 @@ namespace FantasyFootballGame.Domain.Models.Actions.Penalties
         public bool IsScored { get; set; }
 
         [JsonIgnore]
-        public Team Team { get; set; }
+        public Team? Team { get; set; }
         [JsonIgnore]
-        public Fixture Fixture { get; set; }
+        public Fixture? Fixture { get; set; }
         [JsonIgnore]
-        public Goal Goal { get; set; }
+        public Goal? Goal { get; set; }
     }
 }

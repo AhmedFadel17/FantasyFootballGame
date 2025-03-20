@@ -17,10 +17,10 @@ namespace FantasyFootballGame.Domain.Models.Actions
         public int FixtureId { get; set; }
         public CardType CardType { get; set; }
         [JsonIgnore]
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
         [JsonIgnore]
-        public Team Team { get; set; }
+        public Team? Team { get; set; }
         [JsonIgnore]
-        public Fixture Fixture { get; set; }
+        public Fixture? Fixture { get; set; }
     }
 }

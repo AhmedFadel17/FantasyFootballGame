@@ -11,9 +11,9 @@ namespace FantasyFootballGame.Domain.Models.Actions.Goals
         public int? PlayerId { get; set; }
 
         [JsonIgnore]
-        public Goal Goal { get; set; }
+        public Goal? Goal { get; set; }
 
         [JsonIgnore]
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
     }
 }

@@ -1,10 +1,4 @@
-﻿using FantasyFootballGame.Application.DTOs.Goals.Assists;
-using FantasyFootballGame.Application.DTOs.Goals.GoalsScored;
-using FantasyFootballGame.Application.DTOs.Goals.OwnGoals;
-using FantasyFootballGame.Domain.Models;
-using System;
-using System.Collections.Generic;
-
+﻿
 namespace FantasyFootballGame.Application.DTOs.GameActions.Goals
 {
     public record CreateGoalDto

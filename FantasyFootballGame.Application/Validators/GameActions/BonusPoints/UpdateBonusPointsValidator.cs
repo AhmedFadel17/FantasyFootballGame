@@ -16,7 +16,7 @@ namespace FantasyFootballGame.Application.Validators.GameActions.BonusPoints
                 .WithMessage("A maximum of 3 players can receive bonus points.");
 
             RuleForEach(p => p.BonusPoints)
-                .SetValidator(new CreateBonusPointValidator(playersRepository));
+                .SetValidator(new CreateBonusValidator(playersRepository));
         }
     }
 

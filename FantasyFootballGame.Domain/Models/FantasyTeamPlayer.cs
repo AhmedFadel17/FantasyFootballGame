@@ -11,9 +11,9 @@ namespace FantasyFootballGame.Domain.Models
         public PlayerSlot Slot {  get; set; }
         
         [JsonIgnore]
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
 
         [JsonIgnore]
-        public FantasyTeam FantasyTeam { get; set; }
+        public FantasyTeam? FantasyTeam { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions;
-using FantasyFootballGame.Domain.Models.Actions.Cards;
 using FantasyFootballGame.Domain.Models.Actions.Goals;
 using FantasyFootballGame.Domain.Models.Actions.Penalties;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +41,27 @@ namespace FantasyFootballGame.DataAccess.Data
             modelBuilder.Entity<FantasyTeam>()
                 .HasIndex(g => g.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<PenaltyMiss>()
+                .HasIndex(g => g.PenaltyId)
+                .IsUnique();
+
+            modelBuilder.Entity<PenaltySave>()
+                .HasIndex(g => g.PenaltyId)
+                .IsUnique();
+
+            modelBuilder.Entity<GoalScored>()
+                .HasIndex(g => g.GoalId)
+                .IsUnique();
+
+            modelBuilder.Entity<Assist>()
+                .HasIndex(g => g.GoalId)
+                .IsUnique();
+
+            modelBuilder.Entity<OwnGoal>()
+                .HasIndex(g => g.GoalId)
+                .IsUnique();
+
         }
     }
 }

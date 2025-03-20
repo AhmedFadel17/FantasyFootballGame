@@ -14,10 +14,10 @@ namespace FantasyFootballGame.Domain.Models
         public int UsedTransfers { get; set; } = 0;  
         public int TransferCost { get; set; } = 0;
         [JsonIgnore]
-        public FantasyTeam FantasyTeam { get; set; }
+        public FantasyTeam? FantasyTeam { get; set; }
 
         [JsonIgnore]
-        public Gameweek Gameweek { get; set; }
+        public Gameweek? Gameweek { get; set; }
 
     }
 }
