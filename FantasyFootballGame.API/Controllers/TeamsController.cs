@@ -1,9 +1,12 @@
 ﻿using FantasyFootballGame.Application.DTOs.Teams;
 using FantasyFootballGame.Application.Interfaces.Teams;
+using FantasyFootballGame.Domain.Enums.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFootballGame.API.Controllers
 {
+    //[Authorize(Roles = nameof(UserRole.Player))]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamsController : ControllerBase
