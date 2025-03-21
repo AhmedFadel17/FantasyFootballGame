@@ -1,8 +1,8 @@
 using FantasyFootballGame.DataAccess;
 using FantasyFootballGame.Application;
 using FantasyFootballGame.Domain.Settings;
-using Microsoft.IdentityModel.Tokens;
 using FantasyFootballGame.API.Configurations;
+using FantasyFootballGame.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,24 +15,7 @@ await builder.Services.AddDataAccessServices(builder.Configuration);
 await builder.Services.AddApplicationServices();
 var identitySettings = builder.Configuration.GetJsonSection<IdentityServerSettings>("IdentityServerSettings");
 builder.Services.AddSingleton<IdentityServerSettings>(identitySettings);
-
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {
-        options.Authority = identitySettings.Authority;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = identitySettings.Authority,
-            ValidateAudience = false,
-            ValidAudience = identitySettings.ClientId,
-            ValidateLifetime = true,
-
-            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-            NameClaimType = "name"
-
-        };
-    });
+builder.Services.AddCustomAuthentication(identitySettings);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -45,8 +28,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseRouting();
 app.UseAuthorization();
 

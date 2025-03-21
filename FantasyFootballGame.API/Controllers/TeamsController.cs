@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFootballGame.API.Controllers
 {
-    //[Authorize(Roles = nameof(UserRole.Player))]
+    [Authorize(Roles = nameof(UserRole.Admin))]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamsController : ControllerBase
