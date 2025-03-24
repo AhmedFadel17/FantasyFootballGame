@@ -2,7 +2,13 @@
 using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.Interfaces.Players;
 using FantasyFootballGame.DataAccess.Repositories.Players;
+using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
+using FantasyFootballGame.Application.DTOs.Common;
+using FantasyFootballGame.Application.DTOs.Teams;
+using FantasyFootballGame.Application.Helpers;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace FantasyFootballGame.Application.Services.Players
 {
@@ -17,8 +23,17 @@ namespace FantasyFootballGame.Application.Services.Players
         }
         public async Task<List<PlayerResponseDto>> All()
         {
-            var teams= await _repo.GetAll();
-            return _mapper.Map<List<PlayerResponseDto>>(teams);
+            var players= await _repo.GetAll();
+            return _mapper.Map<List<PlayerResponseDto>>(players);
+        }
+
+        public async Task<PaginationDto<PlayerResponseDto>> AllWithPaginationAndFilters
+            (int page, int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
+        {
+            var players= await _repo.GetAllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
+            //var playersList=_mapper.Map<List<PlayerResponseDto>>(players);
+            var paginationSource = new PaginationSource<Player>(players.Item1.ToList(), page, pageSize,players.Item2);
+            return _mapper.Map<PaginationDto<PlayerResponseDto>>(paginationSource);
         }
 
         public async Task<PlayerResponseDto> Create(CreatePlayerDto dto)
@@ -52,10 +67,10 @@ namespace FantasyFootballGame.Application.Services.Players
         {
             var player = await _repo.GetById(id);
             if (player == null) throw new KeyNotFoundException("Player is not found");
-            var updatedPlayer = _mapper.Map<Player>(player);
-            _repo.Update(updatedPlayer);
+            _mapper.Map(dto, player);
+            _repo.Update(player);
             await _repo.Save();
-            return _mapper.Map<PlayerResponseDto>(updatedPlayer);
+            return _mapper.Map<PlayerResponseDto>(player);
         }
 
         public async Task Delete(int id)

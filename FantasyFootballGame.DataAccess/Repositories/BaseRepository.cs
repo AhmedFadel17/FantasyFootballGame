@@ -37,7 +37,6 @@ namespace FantasyFootballGame.DataAccess.Repositories
         public void Update(T entity)
         {
             _dbSet.Update(entity);
-            _context.SaveChangesAsync();
         }
 
         public async Task<bool> Exists(Expression<Func<T, bool>> predicate)

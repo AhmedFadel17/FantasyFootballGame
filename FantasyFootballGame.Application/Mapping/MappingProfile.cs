@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.FantasyTeamPlayers;
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.DTOs.Fixtures;
@@ -29,6 +30,10 @@ namespace FantasyFootballGame.Application.Mapping
     {
         public MappingProfile() 
         {
+            CreateMap(typeof(PaginationSource<>), typeof(PaginationDto<>))
+                .ConvertUsing(typeof(PaginationConverter<,>));
+
+
             CreateMap<Gameweek, GameweekResponseDto>();
             CreateMap<CreateGameweekDto, Gameweek>();
             CreateMap<UpdateGameweekDto, Gameweek>();
@@ -41,9 +46,17 @@ namespace FantasyFootballGame.Application.Mapping
             CreateMap<CreateTeamDto, Team>();
             CreateMap<UpdateTeamDto, Team>();
 
-            CreateMap<Player, PlayerResponseDto>();
+            CreateMap<Player, PlayerResponseDto>()
+                .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.ToString()))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
+            CreateMap<Player, PlayerDto>()
+                .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.ToString()))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
             CreateMap<CreatePlayerDto, Player>();
-            CreateMap<UpdatePlayerDto, Player>();
+            CreateMap<UpdatePlayerDto, Player>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<FantasyTeam, FantasyTeamResponseDto>();
             CreateMap<(double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()

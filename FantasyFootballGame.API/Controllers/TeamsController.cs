@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFootballGame.API.Controllers
 {
-    [Authorize(Roles = nameof(UserRole.Admin))]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamsController : ControllerBase
@@ -18,6 +17,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         public async Task<IActionResult> All()
         {
             var teams = await _service.All();
@@ -25,6 +25,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -33,6 +34,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateTeamDto dto)
         {
@@ -41,6 +43,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = nameof(UserRole.Moderator))]
         public async Task<IActionResult> Create([FromBody] CreateTeamDto dto)
         {
             var team = await _service.Create(dto);
@@ -48,6 +51,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = nameof(UserRole.Moderator))]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

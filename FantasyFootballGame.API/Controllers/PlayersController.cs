@@ -1,6 +1,9 @@
 ﻿using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.Interfaces.Players;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using FantasyFootballGame.Domain.Enums.User;
+using FantasyFootballGame.Domain.Enums;
 
 namespace FantasyFootballGame.API.Controllers
 {
@@ -14,14 +17,18 @@ namespace FantasyFootballGame.API.Controllers
             _service = service;
         }
 
+
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
+        public async Task<IActionResult> GetAll([FromQuery] int page,int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
         {
-            var players = await _service.All();
+            var players = await _service.AllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
             return Ok(players);
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -30,6 +37,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("by-name")]
         public async Task<IActionResult> GetByName([FromQuery] string name)
         {
@@ -38,6 +46,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("by-price")]
         public async Task<IActionResult> GetByPrice([FromQuery] double min,double max)
         {
@@ -46,6 +55,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
             var player = await _service.Create(dto);
@@ -53,6 +63,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id,[FromBody] UpdatePlayerDto dto)
         {
@@ -61,6 +72,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = nameof(UserRole.Moderator))]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

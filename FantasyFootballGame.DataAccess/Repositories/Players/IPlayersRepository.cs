@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Domain.Models;
+﻿using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Models;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Players
 {
@@ -6,6 +7,6 @@ namespace FantasyFootballGame.DataAccess.Repositories.Players
     {
         public Task<IEnumerable<Player>> GetByName(string name);
         public Task<IEnumerable<Player>> GetByPrice(double min,double max);
-
+        public Task<(IEnumerable<Player>,int)> GetAllWithPaginationAndFilters(int page, int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice);
     }
 }

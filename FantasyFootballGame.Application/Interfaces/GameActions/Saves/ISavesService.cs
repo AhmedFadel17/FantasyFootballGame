@@ -2,7 +2,7 @@
 
 namespace FantasyFootballGame.Application.Interfaces.GameActions.Saves
 {
-    internal interface ISavesService
+    public interface ISavesService
     {
         Task<SaveResponseDto> GetById(int id);
         Task<SaveResponseDto> Update(int id, UpdateSaveDto dto);
