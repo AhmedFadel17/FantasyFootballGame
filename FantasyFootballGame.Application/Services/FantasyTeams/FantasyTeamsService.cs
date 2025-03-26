@@ -7,6 +7,7 @@ using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.Domain.Models;
+using FluentValidation;
 
 namespace FantasyFootballGame.Application.Services.FantasyTeams
 {
@@ -17,25 +18,33 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
         private readonly IPlayersRepository _playersRepo;
         private readonly IMapper _mapper;
         private readonly IGameweekTeamsService _gameweekTeamsService;
+        private readonly IValidator<CreateFantasyTeamDto> _createValidator;
+        private readonly IValidator<UpdateFantasyTeamDto> _updateValidator;
+
         public FantasyTeamsService(
             IFantasyTeamsRepository teamsRepository,
             IFanatsyTeamPlayersRepository fantasyPlayerRepo,
             IPlayersRepository playersRepository,
             IGameweekTeamsService gameweekTeamsService,
-            IMapper mapper)
+            IMapper mapper,
+            IValidator<CreateFantasyTeamDto> createValidator,
+            IValidator<UpdateFantasyTeamDto> updateValidator)
         {
             _mapper = mapper;
-            _teamsRepo = teamsRepository; 
+            _teamsRepo = teamsRepository;
             _fantasyPlayersRepo = fantasyPlayerRepo;
             _playersRepo = playersRepository;
             _gameweekTeamsService = gameweekTeamsService;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<FantasyTeamResponseDto> Create(CreateFantasyTeamDto dto)
         {
+            await _createValidator.ValidateAndThrowAsync(dto);
             var players = dto.Players;
-            var teamValue=await CalculateTeamValue(players);
-            var team = _mapper.Map<FantasyTeam>((teamValue.squadValue,teamValue.inTheBank,dto));
+            var teamValue = await CalculateTeamValue(players);
+            var team = _mapper.Map<FantasyTeam>((teamValue.squadValue, teamValue.inTheBank, dto));
 
             await _teamsRepo.Create(team);
             await _teamsRepo.Save();
@@ -50,7 +59,6 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             await _gameweekTeamsService.Create(team.Id);
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
-
 
         public async Task Delete(int id)
         {
@@ -67,16 +75,15 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        
-
         public async Task<FantasyTeamResponseDto> Update(int id, UpdateFantasyTeamDto dto)
         {
+            await _updateValidator.ValidateAndThrowAsync(dto);
             var team = await _teamsRepo.GetById(id);
             if (team == null) throw new KeyNotFoundException("Fantasy team not found");
-            var updatedTeam= _mapper.Map<FantasyTeam>(team);
-            _teamsRepo.Update(updatedTeam);
+            _mapper.Map(dto, team);
+            _teamsRepo.Update(team);
             await _teamsRepo.Save();
-            return _mapper.Map<FantasyTeamResponseDto>(updatedTeam);
+            return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
         private async Task<(double squadValue, double inTheBank)> CalculateTeamValue(List<CreateFantasyTeamPlayerDto> players)
@@ -88,6 +95,5 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             double inTheBank = budget - squadValue;
             return (squadValue, inTheBank);
         }
-
     }
 }

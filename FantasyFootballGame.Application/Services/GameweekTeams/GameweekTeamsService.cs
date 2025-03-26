@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Application.DTOs.GameweekTeams;
+﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.GameweekTeams;
 using FantasyFootballGame.Application.Interfaces.GameweekTeams;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
@@ -6,6 +7,7 @@ using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
 using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
+using FluentValidation;
 
 namespace FantasyFootballGame.Application.Services.GameweekTeams
 {
@@ -15,18 +17,22 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
         private readonly IGameweeksRepository _gameweeksRepo;
         private readonly IFanatsyTeamPlayersRepository _fantasyPlayersRepo;
         private readonly IGameweekTeamPlayersRepository _fanatsyTeamPlayersRepository;
+        private readonly IValidator<SwapPlayersDto> _swapValidator;
 
         public GameweekTeamsService(
             IGameweekTeamsRepository gameweekTeamsRepo,
             IGameweeksRepository gameweeksRepo,
             IFanatsyTeamPlayersRepository fantasyPlayersRepo,
-            IGameweekTeamPlayersRepository fanatsyTeamPlayersRepository)
+            IGameweekTeamPlayersRepository fanatsyTeamPlayersRepository,
+            IValidator<SwapPlayersDto> swapValidator)
         {
             _gameweekTeamsRepo = gameweekTeamsRepo;
             _gameweeksRepo = gameweeksRepo;
             _fantasyPlayersRepo = fantasyPlayersRepo;
             _fanatsyTeamPlayersRepository = fanatsyTeamPlayersRepository;
+            _swapValidator = swapValidator;
         }
+
         public async Task<GameweekTeam> Create(int fantasyTeamId)
         {
             var currentGameweek = await _gameweeksRepo.GetCurrentGameweek();
@@ -64,6 +70,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
 
         public async Task Swap(SwapPlayersDto dto)
         {
+            await _swapValidator.ValidateAndThrowAsync(dto);
             var swaps = dto.Swaps;
             var gameweekTeamId = dto.GameweekTeamId;
             var currentGameweek = await _gameweeksRepo.GetCurrentGameweek();

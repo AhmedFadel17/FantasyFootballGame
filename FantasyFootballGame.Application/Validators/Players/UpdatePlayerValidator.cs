@@ -1,5 +1,6 @@
 ﻿using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
+using FantasyFootballGame.Domain.Enums;
 using FluentValidation;
 
 namespace FantasyFootballGame.Application.Validators.Players
@@ -27,17 +28,21 @@ namespace FantasyFootballGame.Application.Validators.Players
                 .When(p => p.ShirtNumber.HasValue);
 
             RuleFor(p => p.Position)
-                .IsInEnum().WithMessage("Invalid player position.")
-                .When(p => p.Position.HasValue);
+                .Must(position => Enum.TryParse<PlayerPosition>(position, false, out _))
+                .WithMessage("Invalid player position. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(PlayerPosition))))
+                .When(p => p.Position is not null);
 
             RuleFor(p => p.Status)
-                .IsInEnum().WithMessage("Invalid player status.")
-                .When(p => p.Status.HasValue);
+                .Must(status => Enum.TryParse<PlayerPosition>(status, false, out _))
+                .WithMessage("Invalid player status. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(PlayerStatus))))
+                .When(p => p.Status is not null);
 
             RuleFor(p => p.TeamId)
                 .MustAsync(async (teamId, cancellation) => await teamsRepository.Exists(t => t.Id == teamId))
                 .WithMessage("The specified TeamId does not exist.")
                 .When(p => p.TeamId.HasValue);
         }
+
+        
     }
 }

@@ -11,5 +11,7 @@ namespace FantasyFootballGame.Application.Interfaces.Fixtures
         Task AddGoal(int fixtureId, int teamId);
         Task CancelGoal(int fixtureId, int teamId);
         Task Delete(int id);
+        Task<List<FixtureResponseDto>> GetByGameweek(int gameweekId);
+        Task<List<FixtureResponseDto>> GetByTeam(int teamId);
     }
 }

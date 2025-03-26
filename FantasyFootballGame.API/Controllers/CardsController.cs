@@ -22,6 +22,38 @@ namespace FantasyFootballGame.API.Controllers
             return Ok(card);
         }
 
+        [HttpGet]
+        [Route("fixture/{fixtureId:int}")]
+        public async Task<IActionResult> GetByFixture(int fixtureId)
+        {
+            var cards = await _service.GetByFixture(fixtureId);
+            return Ok(cards);
+        }
+
+        [HttpGet]
+        [Route("gameweek/{gameweekId:int}")]
+        public async Task<IActionResult> GetByGameweek(int gameweekId)
+        {
+            var cards = await _service.GetByGameweek(gameweekId);
+            return Ok(cards);
+        }
+
+        [HttpGet]
+        [Route("player/{playerId:int}")]
+        public async Task<IActionResult> GetByPlayer(int playerId)
+        {
+            var cards = await _service.GetByPlayer(playerId);
+            return Ok(cards);
+        }
+
+        [HttpGet]
+        [Route("team/{teamId:int}")]
+        public async Task<IActionResult> GetByTeam(int teamId)
+        {
+            var cards = await _service.GetByTeam(teamId);
+            return Ok(cards);
+        }
+
         [HttpPut]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCardDto dto)

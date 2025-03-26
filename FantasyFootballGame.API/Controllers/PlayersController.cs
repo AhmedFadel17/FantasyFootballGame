@@ -55,7 +55,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
+        //[Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
             var player = await _service.Create(dto);
@@ -63,7 +63,7 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
+        //[Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id,[FromBody] UpdatePlayerDto dto)
         {

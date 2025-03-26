@@ -12,7 +12,7 @@ namespace FantasyFootballGame.Application.DTOs.Players
 
         public int ShirtNumber { get; set; }
 
-        public PlayerPosition Position { get; set; }
+        public required string Position { get; set; }
 
         public int TeamId { get; set; }
 

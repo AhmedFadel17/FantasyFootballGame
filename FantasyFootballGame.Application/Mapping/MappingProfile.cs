@@ -23,6 +23,8 @@ using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions;
 using FantasyFootballGame.Domain.Models.Actions.Goals;
 using FantasyFootballGame.Domain.Models.Actions.Penalties;
+using FantasyFootballGame.Domain.Enums;
+using System;
 
 namespace FantasyFootballGame.Application.Mapping
 {
@@ -50,13 +52,21 @@ namespace FantasyFootballGame.Application.Mapping
                 .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.ToString()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
-            CreateMap<Player, PlayerDto>()
-                .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.ToString()))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<CreatePlayerDto, Player>()
+                .ForMember(dest => dest.Position, opt => opt.MapFrom(src => Enum.Parse<PlayerPosition>(src.Position, false)))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => PlayerStatus.Available));
 
-            CreateMap<CreatePlayerDto, Player>();
             CreateMap<UpdatePlayerDto, Player>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Position, opt => opt.Condition(src => src.Position != null))
+                .ForMember(dest => dest.Position, opt => opt.MapFrom(src => Enum.Parse<PlayerPosition>(src.Position, false)))
+                .ForMember(dest => dest.Price, opt => opt.Condition(src => src.Price != null && src.Price.HasValue))
+                .ForMember(dest => dest.ShirtNumber, opt => opt.Condition(src => src.ShirtNumber != null && src.ShirtNumber.HasValue))
+                .ForMember(dest => dest.TeamId, opt => opt.Condition(src => src.TeamId != null && src.TeamId.HasValue))
+                .ForMember(dest => dest.Name, opt => opt.Condition(src => src.Name != null))
+                .ForMember(dest => dest.FullName, opt => opt.Condition(src => src.FullName != null))
+                .ForMember(dest => dest.Status, opt => opt.Condition(src => src.Status != null))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<PlayerStatus>(src.Status, false)));
 
             CreateMap<FantasyTeam, FantasyTeamResponseDto>();
             CreateMap<(double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()

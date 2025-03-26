@@ -6,7 +6,7 @@ namespace FantasyFootballGame.Application.Interfaces.GameActions.BonusPoints
     public interface IBonusPointsService
     {
         Task<BonusPointsResponseDto> GetById(int id);
-        //Task<List<BonusPointsResponseDto>> GetByFixture(int fixtureId);
+        Task<List<BonusPointsResponseDto>> GetByFixture(int fixtureId);
         Task<BonusPointsResponseDto> Update(int id, UpdateBonusPointsDto dto);
         Task<BonusPointsResponseDto> Create(CreateBonusPointsDto dto);
         Task Delete(int id);

@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "ff-game-actions",
+		"name": "Fantasy Football - Game Actions",
+		"description": "Collection for Fantasy Football Game Actions API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Injuries",
+			"item": [
+				{
+					"name": "Create Injury",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 1,\n    \"description\": \"Ankle injury\",\n    \"level\": 2,\n    \"endDate\": \"2024-05-01T00:00:00Z\",\n    \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/injuries",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "injuries"]
+						},
+						"description": "Create a new injury record"
+					}
+				},
+				{
+					"name": "Get Injury by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/injuries/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "injuries", "1"]
+						},
+						"description": "Get injury details by ID"
+					}
+				},
+				{
+					"name": "Update Injury",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Updated ankle injury\",\n    \"level\": 1,\n    \"endDate\": \"2024-05-15T00:00:00Z\",\n    \"isActive\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/injuries/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "injuries", "1"]
+						},
+						"description": "Update an existing injury record"
+					}
+				},
+				{
+					"name": "Delete Injury",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/injuries/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "injuries", "1"]
+						},
+						"description": "Delete an injury record"
+					}
+				}
+			]
+		},
+		{
+			"name": "Saves",
+			"item": [
+				{
+					"name": "Create Save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 1,\n    \"fixtureId\": 1,\n    \"gameweekId\": 1,\n    \"minute\": 45\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/saves",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "saves"]
+						},
+						"description": "Create a new save record"
+					}
+				},
+				{
+					"name": "Get Save by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "saves", "1"]
+						},
+						"description": "Get save details by ID"
+					}
+				},
+				{
+					"name": "Update Save",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"minute\": 46\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "saves", "1"]
+						},
+						"description": "Update an existing save record"
+					}
+				},
+				{
+					"name": "Delete Save",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "saves", "1"]
+						},
+						"description": "Delete a save record"
+					}
+				}
+			]
+		},
+		{
+			"name": "Penalties Missed",
+			"item": [
+				{
+					"name": "Create Penalty Miss",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 1,\n    \"penaltyId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/missed",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "missed"]
+						},
+						"description": "Create a new penalty miss record"
+					}
+				},
+				{
+					"name": "Get Penalty Miss by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/missed/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "missed", "1"]
+						},
+						"description": "Get penalty miss details by ID"
+					}
+				},
+				{
+					"name": "Update Penalty Miss",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 2,\n    \"penaltyId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/missed/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "missed", "1"]
+						},
+						"description": "Update an existing penalty miss record"
+					}
+				},
+				{
+					"name": "Delete Penalty Miss",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/missed/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "missed", "1"]
+						},
+						"description": "Delete a penalty miss record"
+					}
+				}
+			]
+		},
+		{
+			"name": "Penalties Saves",
+			"item": [
+				{
+					"name": "Create Penalty Save",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 1,\n    \"penaltyId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/saves",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "saves"]
+						},
+						"description": "Create a new penalty save record"
+					}
+				},
+				{
+					"name": "Get Penalty Save by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "saves", "1"]
+						},
+						"description": "Get penalty save details by ID"
+					}
+				},
+				{
+					"name": "Update Penalty Save",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"playerId\": 2,\n    \"penaltyId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "saves", "1"]
+						},
+						"description": "Update an existing penalty save record"
+					}
+				},
+				{
+					"name": "Delete Penalty Save",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/penalties/saves/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "penalties", "saves", "1"]
+						},
+						"description": "Delete a penalty save record"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+} 

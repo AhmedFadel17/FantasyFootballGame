@@ -5,10 +5,7 @@ using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Application.DTOs.Common;
-using FantasyFootballGame.Application.DTOs.Teams;
-using FantasyFootballGame.Application.Helpers;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using FluentValidation;
 
 namespace FantasyFootballGame.Application.Services.Players
 {
@@ -16,10 +13,14 @@ namespace FantasyFootballGame.Application.Services.Players
     {
         private readonly IPlayersRepository _repo;
         private readonly IMapper _mapper;
-        public PlayersService(IPlayersRepository repository,IMapper mapper)
+        private readonly IValidator<CreatePlayerDto> _createPlayerValidator;
+        private readonly IValidator<UpdatePlayerDto> _updatePlayerValidator;
+        public PlayersService(IPlayersRepository repository,IMapper mapper,IValidator<CreatePlayerDto> createPlayerValidator,IValidator<UpdatePlayerDto> updatePlayerValidator)
         {
             _mapper = mapper;
             _repo = repository;
+            _createPlayerValidator = createPlayerValidator;
+            _updatePlayerValidator = updatePlayerValidator;
         }
         public async Task<List<PlayerResponseDto>> All()
         {
@@ -38,6 +39,11 @@ namespace FantasyFootballGame.Application.Services.Players
 
         public async Task<PlayerResponseDto> Create(CreatePlayerDto dto)
         {
+            var validationResult = await _createPlayerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
             var player = _mapper.Map<Player>(dto);
             await _repo.Create(player);
             await _repo.Save();
@@ -65,6 +71,11 @@ namespace FantasyFootballGame.Application.Services.Players
 
         public async Task<PlayerResponseDto> Update(int id, UpdatePlayerDto dto)
         {
+            var validationResult = await _updatePlayerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
             var player = await _repo.GetById(id);
             if (player == null) throw new KeyNotFoundException("Player is not found");
             _mapper.Map(dto, player);

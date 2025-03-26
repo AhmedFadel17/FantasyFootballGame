@@ -1,5 +1,6 @@
 ﻿using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
+using FantasyFootballGame.Domain.Enums;
 using FluentValidation;
 
 namespace FantasyFootballGame.Application.Validators.Players
@@ -25,12 +26,13 @@ namespace FantasyFootballGame.Application.Validators.Players
                 .InclusiveBetween(1, 99).WithMessage("Shirt Number must be between 1 and 99.");
 
             RuleFor(p => p.Position)
-                .IsInEnum().WithMessage("Invalid player position.");
+               .NotEmpty().WithMessage("Position is required.")
+               .Must(position => Enum.TryParse<PlayerPosition>(position, false, out _))
+               .WithMessage("Invalid player position. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(PlayerPosition))));
 
             RuleFor(p => p.TeamId)
                 .MustAsync(async (teamId, cancellation) => await teamRepository.Exists(t => t.Id == teamId))
                 .WithMessage("The specified TeamId does not exist.");
         }
     }
-
 }

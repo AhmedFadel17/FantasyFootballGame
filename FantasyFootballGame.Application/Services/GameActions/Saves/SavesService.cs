@@ -3,6 +3,7 @@ using FantasyFootballGame.Application.DTOs.GameActions.Saves;
 using FantasyFootballGame.Application.Interfaces.GameActions.Saves;
 using FantasyFootballGame.DataAccess.Repositories.Actions.Saves;
 using FantasyFootballGame.Domain.Models.Actions;
+using FluentValidation;
 
 namespace FantasyFootballGame.Application.Services.GameActions.Saves
 {
@@ -10,13 +11,24 @@ namespace FantasyFootballGame.Application.Services.GameActions.Saves
     {
         private readonly ISavesRepository _repo;
         private readonly IMapper _mapper;
-        public SavesService(ISavesRepository savesRepository,IMapper mapper)
+        private readonly IValidator<CreateSaveDto> _createValidator;
+        private readonly IValidator<UpdateSaveDto> _updateValidator;
+
+        public SavesService(
+            ISavesRepository savesRepository,
+            IMapper mapper,
+            IValidator<CreateSaveDto> createValidator,
+            IValidator<UpdateSaveDto> updateValidator)
         {
             _mapper = mapper;
             _repo = savesRepository;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
+
         public async Task<SaveResponseDto> Create(CreateSaveDto dto)
         {
+            await _createValidator.ValidateAndThrowAsync(dto);
             var save = _mapper.Map<Save>(dto);
             await _repo.Create(save);
             await _repo.Save();
@@ -40,12 +52,13 @@ namespace FantasyFootballGame.Application.Services.GameActions.Saves
 
         public async Task<SaveResponseDto> Update(int id, UpdateSaveDto dto)
         {
+            await _updateValidator.ValidateAndThrowAsync(dto);
             var save = await _repo.GetById(id);
             if (save == null) throw new KeyNotFoundException("Save not found");
-            var updatedSave = _mapper.Map<Save>(save);
-            _repo.Update(updatedSave);
+            _mapper.Map(dto, save);
+            _repo.Update(save);
             await _repo.Save();
-            return _mapper.Map<SaveResponseDto>(updatedSave);
+            return _mapper.Map<SaveResponseDto>(save);
         }
     }
 }

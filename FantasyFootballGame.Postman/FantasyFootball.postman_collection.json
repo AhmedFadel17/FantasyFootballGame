@@ -1,0 +1,382 @@
+{
+    "info": {
+        "_postman_id": "ff-complete",
+        "name": "Fantasy Football",
+        "description": "Complete Fantasy Football API Collection with Authentication",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{accessToken}}",
+                "type": "string"
+            }
+        ]
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Register",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    pm.environment.set('username', pm.request.body.raw.username);",
+                                    "    pm.environment.set('password', pm.request.body.raw.password);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"Test123!\",\n    \"role\": \"Player\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{identityUrl}}/api/auth/register",
+                            "host": ["{{identityUrl}}"],
+                            "path": ["api", "auth", "register"]
+                        },
+                        "description": "Register a new user"
+                    }
+                },
+                {
+                    "name": "Get Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.environment.set('accessToken', jsonData.access_token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                            }
+                        ],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "grant_type",
+                                    "value": "password",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "username",
+                                    "value": "{{username}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "{{password}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "client_id",
+                                    "value": "fantasy_football_api",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "client_secret",
+                                    "value": "secret",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "scope",
+                                    "value": "fantasy_football_api.read fantasy_football_api.write openid profile",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{identityUrl}}/connect/token",
+                            "host": ["{{identityUrl}}"],
+                            "path": ["connect", "token"]
+                        },
+                        "description": "Get access token"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Players",
+            "item": [
+                {
+                    "name": "Get All Players",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players?page=1&pageSize=10",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players"],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "teamId",
+                                    "value": null
+                                },
+                                {
+                                    "key": "shirtNumber",
+                                    "value": null
+                                },
+                                {
+                                    "key": "name",
+                                    "value": null
+                                },
+                                {
+                                    "key": "status",
+                                    "value": null
+                                },
+                                {
+                                    "key": "position",
+                                    "value": null
+                                },
+                                {
+                                    "key": "minPrice",
+                                    "value": null
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": null
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Player by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Player by Name",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players/by-name?name=Messi",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players", "by-name"],
+                            "query": [
+                                {
+                                    "key": "name",
+                                    "value": "Messi"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Players by Price Range",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players/by-price?min=5&max=10",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players", "by-price"],
+                            "query": [
+                                {
+                                    "key": "min",
+                                    "value": "5"
+                                },
+                                {
+                                    "key": "max",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Player",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"New Player\",\n    \"shirtNumber\": 10,\n    \"teamId\": 1,\n    \"position\": 0,\n    \"price\": 10.5,\n    \"status\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Player",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Player\",\n    \"shirtNumber\": 11,\n    \"position\": 1,\n    \"price\": 11.5,\n    \"status\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Player",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/players/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "players", "1"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Teams",
+            "item": [
+                {
+                    "name": "Get All Teams",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/teams",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "teams"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Team by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/teams/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "teams", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Team",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"New Team\",\n    \"abbreviation\": \"NT\",\n    \"mainColor\": \"#FF0000\",\n    \"secondaryColor\": \"#0000FF\",\n    \"shirtImgSrc\": \"https://example.com/shirt.png\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/teams",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "teams"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Team",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Team\",\n    \"abbreviation\": \"UT\",\n    \"mainColor\": \"#00FF00\",\n    \"secondaryColor\": \"#FF00FF\",\n    \"shirtImgSrc\": \"https://example.com/updated-shirt.png\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/teams/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "teams", "1"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Team",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/teams/1",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "teams", "1"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5000",
+            "type": "string"
+        },
+        {
+            "key": "identityUrl",
+            "value": "http://localhost:5001",
+            "type": "string"
+        }
+    ]
+} 

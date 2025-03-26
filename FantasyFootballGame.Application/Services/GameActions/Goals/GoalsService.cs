@@ -9,6 +9,7 @@ using FantasyFootballGame.DataAccess.Repositories.Actions.OwnGoals;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions.Goals;
+using FluentValidation;
 
 namespace FantasyFootballGame.Application.Services.GameActions.Goals
 {
@@ -20,20 +21,27 @@ namespace FantasyFootballGame.Application.Services.GameActions.Goals
         private readonly IOwnGoalsRepository _ownGoalsRepo;
         private readonly IFixturesService _fixturesService;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateGoalDto> _createValidator;
+        private readonly IValidator<UpdateGoalDto> _updateValidator;
+
         public GoalsService(
-            IGoalsRepository goalsRepository,
-            IOwnGoalsRepository ownGoalsRepository,
-            IAssistsRepository assistsRepository,
+            IGoalsRepository goalsRepo,
             IGoalsScoredRepository goalsScoredRepo,
+            IAssistsRepository assistsRepo,
+            IOwnGoalsRepository ownGoalsRepo,
             IFixturesService fixturesService,
-            IMapper mapper)
+            IMapper mapper,
+            IValidator<CreateGoalDto> createValidator,
+            IValidator<UpdateGoalDto> updateValidator)
         {
-            _mapper = mapper;
-            _goalsRepo = goalsRepository;
+            _goalsRepo = goalsRepo;
             _goalsScoredRepo = goalsScoredRepo;
-            _assistsRepo = assistsRepository;
-            _ownGoalsRepo = ownGoalsRepository;
+            _assistsRepo = assistsRepo;
+            _ownGoalsRepo = ownGoalsRepo;
             _fixturesService = fixturesService;
+            _mapper = mapper;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<GoalResponseDto> GetById(int id)
@@ -69,16 +77,18 @@ namespace FantasyFootballGame.Application.Services.GameActions.Goals
 
         public async Task<GoalResponseDto> Update(int id, UpdateGoalDto dto)
         {
+            await _updateValidator.ValidateAndThrowAsync(dto);
             var goal = await _goalsRepo.GetById(id);
             if (goal == null) throw new KeyNotFoundException("Goal not found");
-            var updatedGoal = _mapper.Map<Goal>(dto);
-            _goalsRepo.Update(updatedGoal);
+            _mapper.Map(dto, goal);
+            _goalsRepo.Update(goal);
             await _goalsRepo.Save();
-            return _mapper.Map<GoalResponseDto>(updatedGoal);
+            return _mapper.Map<GoalResponseDto>(goal);
         }
 
         public async Task<GoalResponseDto> Create(CreateGoalDto dto)
         {
+            await _createValidator.ValidateAndThrowAsync(dto);
             var teamId = dto.TeamId;
             var fixtureId = dto.FixtureId;
             var goal = _mapper.Map<Goal>(dto);
