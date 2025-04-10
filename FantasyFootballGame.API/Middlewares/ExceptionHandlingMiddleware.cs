@@ -1,8 +1,6 @@
 ﻿
-using FantasyFootballGame.Application.DTOs.Errors;
+using FantasyFootballGame.Application.DTOs.Common;
 using FluentValidation;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Authentication;
 
 namespace FantasyFootballGame.API.Middlewares
 {
@@ -30,27 +28,40 @@ namespace FantasyFootballGame.API.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = exception switch
+
+            var statusCode = exception switch
             {
                 KeyNotFoundException => StatusCodes.Status404NotFound,
-                ArgumentException => StatusCodes.Status400BadRequest,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
+                ArgumentException => StatusCodes.Status400BadRequest,
                 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                AuthenticationException => StatusCodes.Status401Unauthorized,
-                SecurityTokenException => StatusCodes.Status401Unauthorized,
                 _ => StatusCodes.Status500InternalServerError,
             };
 
+            Dictionary<string, List<string>> errors = new();
+
+            if (exception is ValidationException validationEx)
+            {
+                foreach (var failure in validationEx.Errors)
+                {
+                    if (!errors.ContainsKey(failure.PropertyName))
+                        errors[failure.PropertyName] = new List<string>();
+
+                    errors[failure.PropertyName].Add(failure.ErrorMessage);
+                }
+            }
+
             var response = new ErrorResponseDto
             {
-                Message = exception.Message,
-                StatusCode = context.Response.StatusCode,
-                Details = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
-                  ? exception.StackTrace
-                  : null
+                StatusCode = statusCode,
+                Message = exception is ValidationException ? "Validation failed" : exception.Message,
+                Errors = errors.Any() ? errors : null
             };
 
+            context.Response.StatusCode = statusCode;
             return context.Response.WriteAsJsonAsync(response);
         }
+
+
     }
 }

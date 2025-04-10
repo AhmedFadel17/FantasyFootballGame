@@ -1,4 +1,4 @@
-﻿using FantasyFootballGame.Application.DTOs.Errors;
+﻿using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

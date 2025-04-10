@@ -1,4 +1,4 @@
-using FantasyFootballGame.DataAccess;
+﻿using FantasyFootballGame.DataAccess;
 using FantasyFootballGame.Application;
 using FantasyFootballGame.Domain.Settings;
 using FantasyFootballGame.API.Configurations;
@@ -6,12 +6,21 @@ using FantasyFootballGame.API.Middlewares;
 using FantasyFootballGame.DataAccess.Seeds;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
+using FantasyFootballGame.API.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true; // Prevent ASP.NET from overriding validation errors
+});
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ModelValidationFilter>(); // Add the filter globally
+});
 
-builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 await builder.Services.AddDataAccessServices(builder.Configuration);
@@ -79,13 +88,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseRouting();
+app.UseRouting(); 
+//app.UseMiddleware<BadRequestMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>(); 
+
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -3,7 +3,7 @@ using AutoMapper;
 using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.Mapping;
 
-namespace FantasyFootballGame.UnitTests.AutoFixture
+namespace FantasyFootballGame.IntegrationTests.AutoFixture
 {
     public class MapperCustomization : ICustomization
     {

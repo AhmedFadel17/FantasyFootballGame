@@ -6,6 +6,7 @@ using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Application.DTOs.Common;
 using FluentValidation;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace FantasyFootballGame.Application.Services.Players
 {
@@ -32,7 +33,6 @@ namespace FantasyFootballGame.Application.Services.Players
             (int page, int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
         {
             var players= await _repo.GetAllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
-            //var playersList=_mapper.Map<List<PlayerResponseDto>>(players);
             var paginationSource = new PaginationSource<Player>(players.Item1.ToList(), page, pageSize,players.Item2);
             return _mapper.Map<PaginationDto<PlayerResponseDto>>(paginationSource);
         }

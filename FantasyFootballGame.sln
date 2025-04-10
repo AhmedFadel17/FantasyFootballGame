@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FF37068
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootballGame.UnitTests", "FantasyFootballGame.UnitTests\FantasyFootballGame.UnitTests.csproj", "{CB1942B4-AAB4-4607-B2DC-22BD210C6821}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyFootballGame.IntegrationTests", "FantasyFootballGame.IntegrationTests\FantasyFootballGame.IntegrationTests.csproj", "{ADFEA8ED-9393-4099-9084-69C0A3F59CB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,11 +49,16 @@ Global
 		{CB1942B4-AAB4-4607-B2DC-22BD210C6821}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB1942B4-AAB4-4607-B2DC-22BD210C6821}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB1942B4-AAB4-4607-B2DC-22BD210C6821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFEA8ED-9393-4099-9084-69C0A3F59CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFEA8ED-9393-4099-9084-69C0A3F59CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFEA8ED-9393-4099-9084-69C0A3F59CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFEA8ED-9393-4099-9084-69C0A3F59CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CB1942B4-AAB4-4607-B2DC-22BD210C6821} = {2FF37068-5361-4929-929B-2856E3AA4012}
+		{ADFEA8ED-9393-4099-9084-69C0A3F59CB2} = {2FF37068-5361-4929-929B-2856E3AA4012}
 	EndGlobalSection
 EndGlobal
