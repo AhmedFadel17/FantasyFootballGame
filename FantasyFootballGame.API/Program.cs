@@ -8,9 +8,14 @@ using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
 using FantasyFootballGame.API.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration
+    .AddJsonFile("appsettings.json", false, true)
+    .AddUserSecrets<Program>()
+    .AddEnvironmentVariables()
+    .Build();
 // Add services to the container.
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -97,3 +102,6 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }

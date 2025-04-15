@@ -10,6 +10,8 @@ namespace FantasyFootballGame.IntegrationTests.AutoFixture.ModelsCustomizations
     {
         public void Customize(IFixture fixture)
         {
+            var random = new Random();
+
             fixture.Customize<PlayerResponseDto>(composer =>
             {
                 return composer;
@@ -18,12 +20,16 @@ namespace FantasyFootballGame.IntegrationTests.AutoFixture.ModelsCustomizations
             fixture.Customize<CreatePlayerDto>(composer =>
             {
                 return composer
+                    .With(t => t.Price, random.Next(1,99))
+                    .With(t => t.ShirtNumber, random.Next(1, 99))
                     .With(t => t.Position, nameof(PlayerPosition.Forward));
             });
 
             fixture.Customize<UpdatePlayerDto>(composer =>
             {
                 return composer
+                    .With(t => t.Price, random.Next(1, 99))
+                    .With(t => t.ShirtNumber, random.Next(1, 99))
                     .With(t => t.Position, nameof(PlayerPosition.Forward))
                     .With(t => t.Status, nameof(PlayerStatus.Available));
             });

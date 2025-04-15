@@ -1,16 +1,18 @@
 ﻿using FantasyFootballGame.DataAccess.Data;
 using FantasyFootballGame.Domain.Settings;
 using FantasyFootballGame.IntegrationTests.Services;
+using FantasyFootballGame.API.Configurations;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Memory;
-using FantasyFootballGame.API.Configurations;
 
-namespace FantasyFootballGame.IntegrationTests
-{
+
+namespace FantasyFootballGame.IntegrationTests;
+
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -41,4 +43,4 @@ namespace FantasyFootballGame.IntegrationTests
             });
         }
     }
-}
+

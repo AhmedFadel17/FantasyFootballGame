@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+
+		<PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +15,7 @@
     <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="FluentAssertions" Version="8.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
@@ -23,14 +26,12 @@
   <ItemGroup>
     <ProjectReference Include="..\FantasyFootballGame.API\FantasyFootballGame.API.csproj" />
     <ProjectReference Include="..\FantasyFootballGame.Application\FantasyFootballGame.Application.csproj" />
+    <ProjectReference Include="..\FantasyFootballGame.Domain\FantasyFootballGame.Domain.csproj" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Players\" />
   </ItemGroup>
 
 </Project>

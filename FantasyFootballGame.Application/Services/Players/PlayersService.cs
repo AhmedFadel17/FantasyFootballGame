@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.Interfaces.Players;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.Domain.Models;
-using FantasyFootballGame.Application.DTOs.Common;
 using FluentValidation;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace FantasyFootballGame.Application.Services.Players
 {
@@ -16,7 +15,7 @@ namespace FantasyFootballGame.Application.Services.Players
         private readonly IMapper _mapper;
         private readonly IValidator<CreatePlayerDto> _createPlayerValidator;
         private readonly IValidator<UpdatePlayerDto> _updatePlayerValidator;
-        public PlayersService(IPlayersRepository repository,IMapper mapper,IValidator<CreatePlayerDto> createPlayerValidator,IValidator<UpdatePlayerDto> updatePlayerValidator)
+        public PlayersService(IPlayersRepository repository, IMapper mapper, IValidator<CreatePlayerDto> createPlayerValidator, IValidator<UpdatePlayerDto> updatePlayerValidator)
         {
             _mapper = mapper;
             _repo = repository;
@@ -25,15 +24,15 @@ namespace FantasyFootballGame.Application.Services.Players
         }
         public async Task<List<PlayerResponseDto>> All()
         {
-            var players= await _repo.GetAll();
+            var players = await _repo.GetAll();
             return _mapper.Map<List<PlayerResponseDto>>(players);
         }
 
         public async Task<PaginationDto<PlayerResponseDto>> AllWithPaginationAndFilters
-            (int page, int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
+            (int page, int pageSize, int? teamId, int? shirtNumber, string? name, PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
         {
-            var players= await _repo.GetAllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
-            var paginationSource = new PaginationSource<Player>(players.Item1.ToList(), page, pageSize,players.Item2);
+            var players = await _repo.GetAllWithPaginationAndFilters(page, pageSize, teamId, shirtNumber, name, status, position, minPrice, maxPrice);
+            var paginationSource = new PaginationSource<Player>(players.Item1.ToList(), page, pageSize, players.Item2);
             return _mapper.Map<PaginationDto<PlayerResponseDto>>(paginationSource);
         }
 
@@ -65,7 +64,7 @@ namespace FantasyFootballGame.Application.Services.Players
 
         public async Task<List<PlayerResponseDto>> GetByPrice(double min, double max)
         {
-            var players = await _repo.GetByPrice(min,max);
+            var players = await _repo.GetByPrice(min, max);
             return _mapper.Map<List<PlayerResponseDto>>(players);
         }
 

@@ -33,7 +33,7 @@ namespace FantasyFootballGame.Application.Validators.Players
                 .When(p => p.Position is not null);
 
             RuleFor(p => p.Status)
-                .Must(status => Enum.TryParse<PlayerPosition>(status, false, out _))
+                .Must(status => Enum.TryParse<PlayerStatus>(status, false, out _))
                 .WithMessage("Invalid player status. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(PlayerStatus))))
                 .When(p => p.Status is not null);
 

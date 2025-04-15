@@ -21,7 +21,17 @@ namespace FantasyFootballGame.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
-        public async Task<IActionResult> GetAll([FromQuery] int page,int pageSize,int? teamId,int? shirtNumber, string? name,PlayerStatus? status, PlayerPosition? position, double? minPrice, double? maxPrice)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int? teamId,
+            int? shirtNumber, 
+            string? name,
+            PlayerStatus? status, 
+            PlayerPosition? position, 
+            double? minPrice, 
+            double? maxPrice, 
+            int page = 1, 
+            int pageSize = 10
+            )
         {
             var players = await _service.AllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
             return Ok(players);
@@ -38,7 +48,7 @@ namespace FantasyFootballGame.API.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
+        [Authorize(Roles = $" {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
             var player = await _service.Create(dto);

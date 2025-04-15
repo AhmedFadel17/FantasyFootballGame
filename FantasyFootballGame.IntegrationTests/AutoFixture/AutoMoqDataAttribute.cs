@@ -19,6 +19,7 @@ namespace FantasyFootballGame.IntegrationTests.AutoFixture
             fixture.Customize(new CompositeCustomization(
                 new ValidatorCustomization(),
                 new MapperCustomization(),
+                new TeamCustomization(),
                 new PlayerCustomization(),
                 new PaginationCustomization()
             ));
