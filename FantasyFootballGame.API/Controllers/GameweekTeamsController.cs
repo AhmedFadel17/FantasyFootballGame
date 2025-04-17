@@ -1,12 +1,15 @@
+using FantasyFootballGame.API.Factories;
 using FantasyFootballGame.Application.DTOs.GameweekTeams;
 using FantasyFootballGame.Application.Interfaces.GameweekTeams;
+using FantasyFootballGame.Domain.Enums.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFootballGame.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameweekTeamsController : ControllerBase
+    public class GameweekTeamsController : BaseController
     {
         private readonly IGameweekTeamsService _service;
         public GameweekTeamsController(IGameweekTeamsService service)
@@ -14,19 +17,17 @@ namespace FantasyFootballGame.API.Controllers
             _service = service;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromQuery] int fantasyTeamId)
-        {
-            var gameweekTeam = await _service.Create(fantasyTeamId);
-            return Ok(gameweekTeam);
-        }
-
+        [Authorize(Roles = nameof(UserRole.Player))]
         [HttpPost]
         [Route("swap")]
-        public async Task<IActionResult> SwapPlayers([FromBody] SwapPlayersDto dto)
+        public Task<IActionResult> SwapPlayers([FromBody] SwapPlayersDto dto)
         {
-            await _service.Swap(dto);
-            return Ok("Players swapped successfully");
+            return HandleUserIdAsync(async userId =>
+            {
+                await _service.Swap(userId,dto);
+                return Ok(ApiResponseFactory.Success(true, "Players swapped successfully"));
+            });
+            
         }
     }
 } 

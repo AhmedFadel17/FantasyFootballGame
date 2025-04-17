@@ -37,27 +37,30 @@ namespace FantasyFootballGame.IntegrationTests.Features.Players
             // Arrange
             string token = await _authService.GetTokenAsync(UserRole.Moderator);
             var createTeamResponse = await IntegrationTestHelper.CreateItem(_client, _teamsUrl, teamDto, token);
-            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<TeamResponseDto>();
-            dto.TeamId = createdTeam.Id;
+            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<SuccessResponseDto<TeamResponseDto>>();
+            createdTeam.Data.Should().NotBeNull();
+            dto.TeamId = createdTeam.Data.Id;
             var createResponse = await IntegrationTestHelper.CreateItem(_client, _playersUrl, dto, token);
-            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
+            createdPlayer.Data.Should().NotBeNull();
             // Act
             var request = new HttpRequestMessage(HttpMethod.Get, _playersUrl);
             IntegrationTestHelper.AddDefaultHeaders(request, token);
 
             var response = await _client.SendAsync(request);
-            var players = await response.Content.ReadAsJsonAsync<PaginationDto<PlayerResponseDto>>();
+            var players = await response.Content.ReadAsJsonAsync<SuccessResponseDto<PaginationDto<PlayerResponseDto>>>();
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             players.Should().NotBeNull();
-            players.Items.Should().NotBeNull();
-            players.Items.Should().NotBeEmpty();
-            players.Items.Count.Should().Be(1);
-            players.Items.First().Id.Should().Be(createdPlayer.Id);
+            players.Data.Should().NotBeNull();
+            players.Data.Items.Should().NotBeNull();
+            players.Data.Items.Should().NotBeEmpty();
+            players.Data.Items.Count.Should().Be(1);
+            players.Data.Items.First().Id.Should().Be(createdPlayer.Data.Id);
 
-            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Id, token);
-            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Data.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Data.Id, token);
         }
 
 
@@ -68,24 +71,27 @@ namespace FantasyFootballGame.IntegrationTests.Features.Players
             // Arrange
             string token = await _authService.GetTokenAsync(UserRole.Moderator);
             var createTeamResponse = await IntegrationTestHelper.CreateItem(_client, _teamsUrl, teamDto, token);
-            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<TeamResponseDto>();
-            dto.TeamId = createdTeam.Id;
+            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<SuccessResponseDto<TeamResponseDto>>();
+            createdTeam.Data.Should().NotBeNull();
+            dto.TeamId = createdTeam.Data.Id;
             var createResponse = await IntegrationTestHelper.CreateItem(_client, _playersUrl, dto, token);
-            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
+            createdPlayer.Data.Should().NotBeNull();
             // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_playersUrl}/{createdPlayer.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_playersUrl}/{createdPlayer.Data.Id}");
             IntegrationTestHelper.AddDefaultHeaders(request, token);
 
             var response = await _client.SendAsync(request);
-            var players = await response.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var players = await response.Content.ReadAsJsonAsync< SuccessResponseDto<PlayerResponseDto>>();
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             players.Should().NotBeNull();
-            players.Id.Should().Be(createdPlayer.Id);
+            players.Data.Should().NotBeNull();
+            players.Data.Id.Should().Be(createdPlayer.Data.Id);
 
-            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Id, token);
-            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Data.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Data.Id, token);
         }
 
 
@@ -96,21 +102,23 @@ namespace FantasyFootballGame.IntegrationTests.Features.Players
             // Arrange
             string token = await _authService.GetTokenAsync(UserRole.Moderator);
             var createTeamResponse = await IntegrationTestHelper.CreateItem(_client, _teamsUrl, teamDto, token);
-            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<TeamResponseDto>();
-            dto.TeamId = createdTeam.Id;
+            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<SuccessResponseDto<TeamResponseDto>>();
+            createdTeam.Data.Should().NotBeNull();
+            dto.TeamId = createdTeam.Data.Id;
             // Act
             var response = await IntegrationTestHelper.CreateItem(_client, _playersUrl, dto, token);
-            var player = await response.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var player = await response.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             player.Should().NotBeNull();
-            player.TeamId.Should().Be(dto.TeamId);
-            player.Name.Should().Be(dto.Name);
+            player.Data.Should().NotBeNull();
+            player.Data.TeamId.Should().Be(dto.TeamId);
+            player.Data.Name.Should().Be(dto.Name);
 
 
-            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, player.Id, token);
-            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, player.Data.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Data.Id, token);
         }
 
         [Theory]
@@ -120,28 +128,31 @@ namespace FantasyFootballGame.IntegrationTests.Features.Players
             // Arrange
             string token = await _authService.GetTokenAsync(UserRole.Moderator);
             var createTeamResponse = await IntegrationTestHelper.CreateItem(_client, _teamsUrl, teamDto, token);
-            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<TeamResponseDto>();
-            dto.TeamId = createdTeam.Id;
+            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<SuccessResponseDto<TeamResponseDto>>();
+            createdTeam.Data.Should().NotBeNull();
+            dto.TeamId = createdTeam.Data.Id;
             updatePlayerDto.TeamId = dto.TeamId;
             var createResponse = await IntegrationTestHelper.CreateItem(_client, _playersUrl, dto, token);
-            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
+            createdPlayer.Data.Should().NotBeNull();
             // Act
-            var request = new HttpRequestMessage(HttpMethod.Put, $"{_playersUrl}/{createdPlayer.Id}")
+            var request = new HttpRequestMessage(HttpMethod.Put, $"{_playersUrl}/{createdPlayer.Data.Id}")
             {
                 Content = updatePlayerDto.ReadAsJsonContent()
             };
             IntegrationTestHelper.AddDefaultHeaders(request, token);
             var response = await _client.SendAsync(request);
-            var player = await response.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var player = await response.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             player.Should().NotBeNull();
-            player.Id.Should().Be(createdPlayer.Id);
-            player.Name.Should().Be(updatePlayerDto.Name);
-            player.Price.Should().Be(updatePlayerDto.Price);
-            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Id, token);
-            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Id, token);
+            player.Data.Should().NotBeNull();
+            player.Data.Id.Should().Be(createdPlayer.Data.Id);
+            player.Data.Name.Should().Be(updatePlayerDto.Name);
+            player.Data.Price.Should().Be(updatePlayerDto.Price);
+            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Data.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Data.Id, token);
         }
 
 
@@ -152,20 +163,22 @@ namespace FantasyFootballGame.IntegrationTests.Features.Players
             // Arrange
             string token = await _authService.GetTokenAsync(UserRole.Moderator);
             var createTeamResponse = await IntegrationTestHelper.CreateItem(_client, _teamsUrl, teamDto, token);
-            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<TeamResponseDto>();
-            dto.TeamId = createdTeam.Id;
+            var createdTeam = await createTeamResponse.Content.ReadAsJsonAsync<SuccessResponseDto<TeamResponseDto>>();
+            createdTeam.Data.Should().NotBeNull();
+            dto.TeamId = createdTeam.Data.Id;
             var createResponse = await IntegrationTestHelper.CreateItem(_client, _playersUrl, dto, token);
-            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<PlayerResponseDto>();
+            var createdPlayer = await createResponse.Content.ReadAsJsonAsync<SuccessResponseDto<PlayerResponseDto>>();
+            createdPlayer.Data.Should().NotBeNull();
             // Act
-            var request = new HttpRequestMessage(HttpMethod.Delete,$"{_playersUrl}/{createdPlayer.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete,$"{_playersUrl}/{createdPlayer.Data.Id}");
             IntegrationTestHelper.AddDefaultHeaders(request, token);
             var response = await _client.SendAsync(request);
 
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
 
-            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Id, token);
-            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _playersUrl, createdPlayer.Data.Id, token);
+            await IntegrationTestHelper.DeleteItem(_client, _teamsUrl, createdTeam.Data.Id, token);
         }
     }
 }

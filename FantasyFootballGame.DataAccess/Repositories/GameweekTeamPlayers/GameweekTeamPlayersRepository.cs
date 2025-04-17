@@ -16,6 +16,18 @@ namespace FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers
 
         }
 
+        public async Task<IEnumerable<GameweekTeamPlayer>> GetByUserId(int userId)
+        {
+            return await _dbSet
+                .Include(p => p.FantasyTeamPlayer)
+                    .ThenInclude(fp => fp.Player)
+                .Where(p =>
+                    p.GameweekTeam.FantasyTeam.UserId == userId &&
+                    p.GameweekTeam.Gameweek.IsCurrent)
+                .ToListAsync();
+        }
+
+
         public async Task<GameweekTeamPlayer> GetPlayerFromTeam(int gameweekTeamId, int playerId)
         {
             return await _dbSet.Where(p=> p.GameweekTeamId==gameweekTeamId && p.PlayerId==playerId).FirstAsync();

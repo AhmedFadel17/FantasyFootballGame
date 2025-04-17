@@ -1,29 +1,22 @@
 ﻿using FantasyFootballGame.Application.DTOs.GameweekTeams;
 using FantasyFootballGame.Application.Validators.Swaps;
-using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
 using FantasyFootballGame.Domain.Enums;
 using FluentValidation;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace FantasyFootballGame.Application.Validators.GameweekTeams
 {
     public class SwapPlayersValidator : AbstractValidator<SwapPlayersDto>
     {
+        private int _userId;
+
         public SwapPlayersValidator(
             IGameweekTeamsRepository gameweekTeamsRepository,
             IGameweekTeamPlayersRepository gameweekTeamPlayersRepository,
             CreateSwapValidator swapValidator)
         {
-            RuleFor(t => t.GameweekTeamId)
-                .MustAsync(async (id, cancellation) => await gameweekTeamsRepository.Exists(t => t.Id == id))
-                .WithMessage("The specified GameweekTeamId does not exist.");
-
-            RuleFor(t => t.GameweekTeamId)
-                .MustAsync(async (id, cancellation) => !await gameweekTeamsRepository.IsCurrentGameweekTeam(id))
-                .WithMessage("The specified GameweekTeamId is not active.");
 
             RuleFor(t => t.Swaps)
                 .NotNull().WithMessage("Swaps list cannot be null.")
@@ -33,7 +26,7 @@ namespace FantasyFootballGame.Application.Validators.GameweekTeams
             RuleFor(t => t)
                 .MustAsync(async (dto, cancellation) =>
                 {
-                    var players = await gameweekTeamPlayersRepository.GetByTeamId(dto.GameweekTeamId);
+                    var players = await gameweekTeamPlayersRepository.GetByUserId(_userId);
 
                     var startingPlayers = players.Where(p => p.IsStarting).ToList();
                     var benchPlayers = players.Where(p => !p.IsStarting).ToList();
@@ -48,6 +41,11 @@ namespace FantasyFootballGame.Application.Validators.GameweekTeams
                            defCount >= 3 && midCount >= 2 && fwdCount >= 1;
                 })
                 .WithMessage("Invalid formation: You must have 1 starting GK, 1 bench GK, at least 3 DEFs, 2 MIDs, and 1 FWD.");
+        }
+
+        public void SetUserContext(int userId)
+        {
+            _userId = userId;
         }
     }
 }

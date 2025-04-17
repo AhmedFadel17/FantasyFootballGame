@@ -24,9 +24,6 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
                 .MustAsync(async (name, cancellation) => !await fantasyTeamsRepository.Exists(t => t.Name == name))
                 .WithMessage("A team with this name already exists.");
 
-            RuleFor(t => t.UserId)
-                .GreaterThan(0).WithMessage("User ID must be a valid positive number.");
-
             RuleFor(t => t.Players)
                 .NotNull().WithMessage("Players list cannot be null.")
                 .NotEmpty().WithMessage("A team must have at least one player.")

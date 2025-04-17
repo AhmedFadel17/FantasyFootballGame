@@ -1,7 +1,5 @@
-﻿using FantasyFootballGame.Application.DTOs.Common;
-using Microsoft.AspNetCore.Http;
+﻿using FantasyFootballGame.API.Factories;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Text.Json;
 
 namespace FantasyFootballGame.API.Middlewares
 {
@@ -36,12 +34,7 @@ namespace FantasyFootballGame.API.Middlewares
                     }
                 }
 
-                var response = new ErrorResponseDto
-                {
-                    Message = "One or more validation errors occurred.",
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Errors = errors
-                };
+                var response = ApiResponseFactory.Error("One or more validation errors occurred.", errors, StatusCodes.Status400BadRequest);
 
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(response);

@@ -70,18 +70,19 @@ namespace FantasyFootballGame.Application.Services.Gameweeks
             return _mapper.Map<GameweekResponseDto>(gameweek);
         }
 
-        public async Task<Gameweek> GetCurrentGameweek()
+        public async Task<GameweekResponseDto> GetCurrentGameweek()
         {
             var gameweek = await _gameweeksRepo.GetCurrentGameweek();
             if (gameweek == null)
                 throw new Exception("No active gameweek found");
-            return gameweek;
+            return _mapper.Map<GameweekResponseDto>(gameweek);
         }
 
         public async Task<IEnumerable<Gameweek>> GetAll()
         {
             return await _gameweeksRepo.GetAll();
         }
+
     }
 }
 

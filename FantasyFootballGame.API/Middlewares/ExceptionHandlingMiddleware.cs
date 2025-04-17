@@ -1,5 +1,5 @@
 ﻿
-using FantasyFootballGame.Application.DTOs.Common;
+using FantasyFootballGame.API.Factories;
 using FluentValidation;
 
 namespace FantasyFootballGame.API.Middlewares
@@ -51,12 +51,12 @@ namespace FantasyFootballGame.API.Middlewares
                 }
             }
 
-            var response = new ErrorResponseDto
-            {
-                StatusCode = statusCode,
-                Message = exception is ValidationException ? "Validation failed" : exception.Message,
-                Errors = errors.Any() ? errors : null
-            };
+            var response = ApiResponseFactory.Error(
+                exception is ValidationException ? "Validation failed" : exception.Message, 
+                errors.Any() ? errors : null,
+                statusCode
+                );
+
 
             context.Response.StatusCode = statusCode;
             return context.Response.WriteAsJsonAsync(response);

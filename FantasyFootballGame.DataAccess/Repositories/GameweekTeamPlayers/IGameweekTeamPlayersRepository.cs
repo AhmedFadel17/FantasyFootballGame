@@ -6,6 +6,7 @@ namespace FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers
     {
         Task<GameweekTeamPlayer> GetPlayerFromTeam(int gameweekTeamId, int playerId);
         Task<IEnumerable<GameweekTeamPlayer>> GetByTeamId(int gameweekTeamId);
+        Task<IEnumerable<GameweekTeamPlayer>> GetByUserId(int userId);
 
     }
 }

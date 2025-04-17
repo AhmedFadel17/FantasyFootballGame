@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using FantasyFootballGame.Domain.Enums.User;
 using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.API.Factories;
 
 namespace FantasyFootballGame.API.Controllers
 {
@@ -16,8 +17,6 @@ namespace FantasyFootballGame.API.Controllers
         {
             _service = service;
         }
-
-
 
         [HttpGet]
         [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
@@ -34,7 +33,7 @@ namespace FantasyFootballGame.API.Controllers
             )
         {
             var players = await _service.AllWithPaginationAndFilters(page,pageSize,teamId,shirtNumber,name,status,position,minPrice,maxPrice);
-            return Ok(players);
+            return Ok(ApiResponseFactory.Success(players));
         }
 
         [HttpGet]
@@ -43,7 +42,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var player= await _service.GetById(id);
-            return Ok(player);
+            return Ok(ApiResponseFactory.Success(player));
         }
 
 
@@ -52,7 +51,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
             var player = await _service.Create(dto);
-            return Ok(player);
+            return Ok(ApiResponseFactory.Success(player, "Player created successfully"));
         }
 
         [HttpPut]
@@ -61,7 +60,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Update(int id,[FromBody] UpdatePlayerDto dto)
         {
             var player = await _service.Update(id,dto);
-            return Ok(player);
+            return Ok(ApiResponseFactory.Success(player, "Player updated successfully"));
         }
 
         [HttpDelete]
@@ -70,7 +69,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _service.Delete(id);
-            return Ok("Player has been deleted");
+            return Ok(ApiResponseFactory.Success(true, "Player has been deleted"));
         }
     }
 }

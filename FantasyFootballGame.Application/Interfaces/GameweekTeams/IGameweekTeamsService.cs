@@ -11,7 +11,7 @@ namespace FantasyFootballGame.Application.Interfaces.GameweekTeams
     public interface IGameweekTeamsService
     {
         Task<GameweekTeam> Create(int fantasyTeamId);
-        Task Swap(SwapPlayersDto dto);
+        Task Swap(int userId,SwapPlayersDto dto);
 
 
     }

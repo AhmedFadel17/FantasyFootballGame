@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Application.DTOs.Teams;
+﻿using FantasyFootballGame.API.Factories;
+using FantasyFootballGame.Application.DTOs.Teams;
 using FantasyFootballGame.Application.Interfaces.Teams;
 using FantasyFootballGame.Domain.Enums.User;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> All()
         {
             var teams = await _service.All();
-            return Ok(teams);
+            return Ok(ApiResponseFactory.Success(teams));
         }
 
         [HttpGet]
@@ -30,7 +31,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var team = await _service.GetById(id);
-            return Ok(team);
+            return Ok(ApiResponseFactory.Success(team));
         }
 
         [HttpPut]
@@ -39,15 +40,15 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UpdateTeamDto dto)
         {
             var team = await _service.Update(id,dto);
-            return Ok(team);
+            return Ok(ApiResponseFactory.Success(team, "Team updated successfully"));
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(UserRole.Moderator))]
+        [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         public async Task<IActionResult> Create([FromBody] CreateTeamDto dto)
         {
             var team = await _service.Create(dto);
-            return Ok(team);
+            return Ok(ApiResponseFactory.Success(team, "Team created successfully"));
         }
 
         [HttpDelete]
@@ -56,7 +57,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _service.Delete(id);
-            return Ok("Team has been deleted");
+            return Ok(ApiResponseFactory.Success(true, "Team has been deleted"));
         }
     }
 }

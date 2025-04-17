@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using FantasyFootballGame.Application.DTOs.GameweekTeams;
+using FantasyFootballGame.Application.Interfaces.FantasyTeams;
+using FantasyFootballGame.Application.Interfaces.Gameweeks;
 using FantasyFootballGame.Application.Interfaces.GameweekTeams;
+using FantasyFootballGame.Application.Validators.GameweekTeams;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
+using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
@@ -17,19 +21,26 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
         private readonly IGameweeksRepository _gameweeksRepo;
         private readonly IFanatsyTeamPlayersRepository _fantasyPlayersRepo;
         private readonly IGameweekTeamPlayersRepository _fanatsyTeamPlayersRepository;
-        private readonly IValidator<SwapPlayersDto> _swapValidator;
+        private readonly IFantasyTeamsService _fantasyTeamsService;
+        private readonly IGameweeksService _gameweeksService;
+        private readonly SwapPlayersValidator _swapValidator;
+
 
         public GameweekTeamsService(
             IGameweekTeamsRepository gameweekTeamsRepo,
             IGameweeksRepository gameweeksRepo,
             IFanatsyTeamPlayersRepository fantasyPlayersRepo,
             IGameweekTeamPlayersRepository fanatsyTeamPlayersRepository,
-            IValidator<SwapPlayersDto> swapValidator)
+            IFantasyTeamsService fantasyTeamsService,
+            IGameweeksService gameweeksService,
+            SwapPlayersValidator swapValidator)
         {
             _gameweekTeamsRepo = gameweekTeamsRepo;
             _gameweeksRepo = gameweeksRepo;
             _fantasyPlayersRepo = fantasyPlayersRepo;
             _fanatsyTeamPlayersRepository = fanatsyTeamPlayersRepository;
+            _fantasyTeamsService = fantasyTeamsService;
+            _gameweeksService = gameweeksService;
             _swapValidator = swapValidator;
         }
 
@@ -68,15 +79,14 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             return gameweekTeam;
         }
 
-        public async Task Swap(SwapPlayersDto dto)
+        public async Task Swap(int userId,SwapPlayersDto dto)
         {
+            _swapValidator.SetUserContext(userId);
             await _swapValidator.ValidateAndThrowAsync(dto);
+            var fantasyTeam = await _fantasyTeamsService.GetByUserId(userId);
             var swaps = dto.Swaps;
-            var gameweekTeamId = dto.GameweekTeamId;
-            var currentGameweek = await _gameweeksRepo.GetCurrentGameweek();
-            if (currentGameweek == null)
-                throw new Exception("No active gameweek found");
-            var gameweekTeam = await _gameweekTeamsRepo.GetCurrentGameweekTeam(gameweekTeamId, currentGameweek.Id);
+            var currentGameweek = await _gameweeksService.GetCurrentGameweek();
+            var gameweekTeam = await _gameweekTeamsRepo.GetCurrentGameweekTeam(fantasyTeam.Id, currentGameweek.Id);
             foreach (var swap in swaps)
             {
                 var playerOutId = swap.PlayerOutId;

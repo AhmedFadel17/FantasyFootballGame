@@ -39,12 +39,12 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             _updateValidator = updateValidator;
         }
 
-        public async Task<FantasyTeamResponseDto> Create(CreateFantasyTeamDto dto)
+        public async Task<FantasyTeamResponseDto> Create(int userId,CreateFantasyTeamDto dto)
         {
             await _createValidator.ValidateAndThrowAsync(dto);
             var players = dto.Players;
             var teamValue = await CalculateTeamValue(players);
-            var team = _mapper.Map<FantasyTeam>((teamValue.squadValue, teamValue.inTheBank, dto));
+            var team = _mapper.Map<FantasyTeam>((userId,teamValue.squadValue, teamValue.inTheBank, dto));
 
             await _teamsRepo.Create(team);
             await _teamsRepo.Save();
@@ -75,15 +75,30 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        public async Task<FantasyTeamResponseDto> Update(int id, UpdateFantasyTeamDto dto)
+        public async Task<FantasyTeamResponseDto> GetByUserId(int id)
+        {
+            var team = await _teamsRepo.GetByUserId(id);
+            if (team == null) throw new KeyNotFoundException("No fantasy team for this user");
+            return _mapper.Map<FantasyTeamResponseDto>(team);
+        }
+
+        public async Task<FantasyTeamResponseDto> Update(int userId, UpdateFantasyTeamDto dto)
         {
             await _updateValidator.ValidateAndThrowAsync(dto);
-            var team = await _teamsRepo.GetById(id);
-            if (team == null) throw new KeyNotFoundException("Fantasy team not found");
+            var team = await _teamsRepo.GetByUserId(userId);
+            if (team == null) throw new KeyNotFoundException("No fantasy team for this user");
             _mapper.Map(dto, team);
             _teamsRepo.Update(team);
             await _teamsRepo.Save();
             return _mapper.Map<FantasyTeamResponseDto>(team);
+        }
+
+        public async Task DeleteByUserId(int userId)
+        {
+            var team = await _teamsRepo.GetByUserId(userId);
+            if (team == null) throw new KeyNotFoundException("No fantasy team for this user");
+            _teamsRepo.Delete(team);
+            await _teamsRepo.Save();
         }
 
         private async Task<(double squadValue, double inTheBank)> CalculateTeamValue(List<CreateFantasyTeamPlayerDto> players)

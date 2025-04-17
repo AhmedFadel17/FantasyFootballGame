@@ -6,6 +6,7 @@ namespace FantasyFootballGame.Application.Interfaces.Gameweeks
     {
         Task<List<GameweekResponseDto>> All();
         Task<GameweekResponseDto> GetById(int id);
+        Task<GameweekResponseDto> GetCurrentGameweek();
         Task<GameweekResponseDto> Update(int id, UpdateGameweekDto dto);
         Task<GameweekResponseDto> Create(CreateGameweekDto dto);
         Task Delete(int id);

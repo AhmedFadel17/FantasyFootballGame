@@ -1,8 +1,7 @@
-﻿using FantasyFootballGame.Application.DTOs.Common;
+﻿using FantasyFootballGame.API.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Linq;
+
 
 namespace FantasyFootballGame.API.Filters
 {
@@ -27,13 +26,7 @@ namespace FantasyFootballGame.API.Filters
                         errors[fieldName] = errorMessages;
                     }
                 }
-
-                var response = new ErrorResponseDto
-                {
-                    StatusCode = 400,
-                    Message = "Validation failed.",
-                    Errors = errors
-                };
+                var response = ApiResponseFactory.Error("Validation failed.", errors);
 
                 context.Result = new JsonResult(response)
                 {

@@ -35,7 +35,7 @@ namespace FantasyFootballGame.UnitTests.Features.Players.Controllers.SuccessCase
                 .ReturnsAsync(paginationDto);
 
             // Act            
-            var res = await sut.GetAll(page, pageSize, teamId, shirtNumber, name, status, position, minPrice, maxPrice);
+            var res = await sut.GetAll(teamId, shirtNumber, name, status, position, minPrice, maxPrice, page, pageSize);
 
             //Assert 
             res.Should().NotBeNull();

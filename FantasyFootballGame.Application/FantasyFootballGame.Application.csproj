@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\PlayerStats\**" />
     <Compile Remove="Services\PlayerStats\**" />
+    <EmbeddedResource Remove="Interfaces\PlayerStats\**" />
     <EmbeddedResource Remove="Services\PlayerStats\**" />
+    <None Remove="Interfaces\PlayerStats\**" />
     <None Remove="Services\PlayerStats\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="DTOs\Errors\" />
     <Folder Include="DTOs\PlayerStats\" />
-    <Folder Include="Interfaces\PlayerStats\" />
     <Folder Include="Cache\" />
     <Folder Include="Providers\" />
   </ItemGroup>

@@ -69,7 +69,8 @@ namespace FantasyFootballGame.Application.Mapping
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<PlayerStatus>(src.Status, false)));
 
             CreateMap<FantasyTeam, FantasyTeamResponseDto>();
-            CreateMap<(double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()
+            CreateMap<(int userId,double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.userId))
                 .ForMember(dest => dest.SquadValue, opt => opt.MapFrom(src => src.squadValue))
                 .ForMember(dest => dest.InTheBank, opt => opt.MapFrom(src => src.inTheBank));
             CreateMap<UpdateFantasyTeamDto, FantasyTeam>();
