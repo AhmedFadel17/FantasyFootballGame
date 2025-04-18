@@ -8,5 +8,13 @@ namespace FantasyFootballGame.DataAccess.Repositories.Actions.RedCards
         Task<IEnumerable<Card>> GetByGameweek(int gameweekId);
         Task<IEnumerable<Card>> GetByPlayer(int playerId);
         Task<IEnumerable<Card>> GetByTeam(int teamId);
+        public Task<(IEnumerable<Card>, int)> GetAllWithPagination(
+            int page,
+            int pageSize,
+            int? teamId,
+            int? fixtureId,
+            int? gameweekId,
+            int? playerId
+            );
     }
 }

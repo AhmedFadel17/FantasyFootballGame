@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.Fixtures;
 using FantasyFootballGame.Application.Interfaces.Fixtures;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;
 using FantasyFootballGame.Domain.Models;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FantasyFootballGame.Application.Services.Fixtures
 {
@@ -75,18 +71,6 @@ namespace FantasyFootballGame.Application.Services.Fixtures
             return _mapper.Map<FixtureResponseDto>(fixture);
         }
 
-        public async Task<List<FixtureResponseDto>> GetByGameweek(int gameweekId)
-        {
-            var fixtures = await _fixturesRepo.GetByGameweek(gameweekId);
-            return _mapper.Map<List<FixtureResponseDto>>(fixtures);
-        }
-
-        public async Task<List<FixtureResponseDto>> GetByTeam(int teamId)
-        {
-            var fixtures = await _fixturesRepo.GetByTeam(teamId);
-            return _mapper.Map<List<FixtureResponseDto>>(fixtures);
-        }
-
         public async Task AddGoal(int fixtureId,int teamId)
         {
             var fixture = await _fixturesRepo.GetById(fixtureId);
@@ -105,6 +89,14 @@ namespace FantasyFootballGame.Application.Services.Fixtures
             if (fixture.AwayTeamId == teamId) fixture.AwayTeamScore -= 1;
             _fixturesRepo.Update(fixture);
             await _fixturesRepo.Save();
+        }
+
+        public async Task<PaginationDto<FixtureResponseDto>> AllWithPagination(
+            int page, int pageSize, int? teamId, int? gameweekId, int? playerId, DateOnly? date)
+        {
+            var fixtures = await _fixturesRepo.GetAllWithPagination(page, pageSize, teamId, gameweekId,playerId,date);
+            var paginationSource = new PaginationSource<Fixture>(fixtures.Item1.ToList(), page, pageSize, fixtures.Item2);
+            return _mapper.Map<PaginationDto<FixtureResponseDto>>(paginationSource);
         }
     }
 }

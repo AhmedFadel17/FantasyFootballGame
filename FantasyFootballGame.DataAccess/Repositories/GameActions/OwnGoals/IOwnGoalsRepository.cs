@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Domain.Models.Actions.Goals;
+﻿using FantasyFootballGame.Domain.Models.Actions;
+using FantasyFootballGame.Domain.Models.Actions.Goals;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Actions.OwnGoals
 {

@@ -18,11 +18,18 @@ namespace FantasyFootballGame.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = $"{nameof(UserRole.Player)},{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
+        [Authorize(Roles = $"{nameof(UserRole.Player)}, {nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int? teamId,
+            int? gameweekId,
+            int? playerId,
+            DateOnly? date,
+            int page = 1,
+            int pageSize = 10
+            )
         {
-            var fixtures = await _service.All();
+            var fixtures = await _service.AllWithPagination(page,pageSize,teamId,gameweekId,playerId,date);
             return Ok(ApiResponseFactory.Success(fixtures));
         }
 
@@ -51,23 +58,6 @@ namespace FantasyFootballGame.API.Controllers
             var fixture = await _service.Create(dto);
             return Ok(ApiResponseFactory.Success(fixture, "Fixture created successfully"));
         }
-
-        //[Authorize(Roles = $"{nameof(UserRole.Player)},{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
-        //[HttpPost]
-        //[Route("{fixtureId:int}/teams/{teamId:int}/goals")]
-        //public async Task<IActionResult> AddGoal(int fixtureId, int teamId)
-        //{
-        //    await _service.AddGoal(fixtureId, teamId);
-        //    return Ok("Goal added successfully");
-        //}
-
-        //[HttpDelete]
-        //[Route("{fixtureId:int}/teams/{teamId:int}/goals")]
-        //public async Task<IActionResult> CancelGoal(int fixtureId, int teamId)
-        //{
-        //    await _service.CancelGoal(fixtureId, teamId);
-        //    return Ok("Goal cancelled successfully");
-        //}
 
         [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
         [HttpDelete]

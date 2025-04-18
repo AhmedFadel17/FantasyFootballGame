@@ -1,9 +1,13 @@
+using FantasyFootballGame.API.Factories;
 using FantasyFootballGame.Application.DTOs.GameActions.Penalties;
 using FantasyFootballGame.Application.Interfaces.GameActions.Penalties;
+using FantasyFootballGame.Domain.Enums.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FantasyFootballGame.API.Controllers
+namespace FantasyFootballGame.API.Controllers.Actions
 {
+    [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
     [Route("api/[controller]")]
     [ApiController]
     public class PenaltiesController : ControllerBase
@@ -19,14 +23,14 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var penalty = await _service.GetById(id);
-            return Ok(penalty);
+            return Ok(ApiResponseFactory.Success(penalty));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePenaltyDto dto)
         {
             var penalty = await _service.Create(dto);
-            return Ok(penalty);
+            return Ok(ApiResponseFactory.Success(penalty,"Penalty created successfully"));
         }
 
         [HttpPut]
@@ -34,7 +38,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePenaltyDto dto)
         {
             var penalty = await _service.Update(id, dto);
-            return Ok(penalty);
+            return Ok(ApiResponseFactory.Success(penalty, "Penalty updated successfully"));
         }
 
         [HttpDelete]
@@ -42,7 +46,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _service.Delete(id);
-            return Ok("Penalty has been deleted");
+            return Ok(ApiResponseFactory.Success(true, "Penalty has been deleted"));
         }
     }
-} 
+}

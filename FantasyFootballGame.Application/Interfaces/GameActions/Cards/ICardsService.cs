@@ -1,14 +1,19 @@
-﻿using FantasyFootballGame.Application.DTOs.GameActions.Cards;
+﻿using FantasyFootballGame.Application.DTOs.Common;
+using FantasyFootballGame.Application.DTOs.GameActions.Cards;
 
 namespace FantasyFootballGame.Application.Interfaces.GameActions.Cards
 {
     public interface ICardsService
     {
         Task<CardResponseDto> GetById(int id);
-        Task<List<CardResponseDto>> GetByFixture(int fixtureId);
-        Task<List<CardResponseDto>> GetByGameweek(int gameweekId);
-        Task<List<CardResponseDto>> GetByPlayer(int playerId);
-        Task<List<CardResponseDto>> GetByTeam(int teamId);
+        Task<PaginationDto<CardResponseDto>> GetAllWithPagination(
+            int page,
+            int pageSize,
+            int? playerId,
+            int? teamId,
+            int? fixtureId,
+            int? gameweekId
+            );
         Task<CardResponseDto> Update(int id, UpdateCardDto dto);
         Task<CardResponseDto> Create(CreateCardDto dto);
         Task Delete(int id);

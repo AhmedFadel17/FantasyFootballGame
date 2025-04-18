@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.GameActions.Cards;
 using FantasyFootballGame.Application.Interfaces.GameActions.Cards;
 using FantasyFootballGame.DataAccess.Repositories.Actions.RedCards;
@@ -44,17 +45,14 @@ namespace FantasyFootballGame.Application.Services.GameActions.Cards
             await _cardsRepo.Save();
         }
 
-        public async Task<List<CardResponseDto>> GetByFixture(int fixtureId)
+        public async Task<PaginationDto<CardResponseDto>> GetAllWithPagination(int page, int pageSize, int? playerId, int? teamId, int? fixtureId, int? gameweekId)
         {
-            var cards = await _cardsRepo.GetByFixture(fixtureId);
-            return _mapper.Map<List<CardResponseDto>>(cards);
+            var cards =  await _cardsRepo.GetAllWithPagination(page, pageSize, playerId, teamId, fixtureId, gameweekId);
+            var paginationSource = new PaginationSource<Card>(cards.Item1.ToList(), page, pageSize, cards.Item2);
+            return _mapper.Map<PaginationDto<CardResponseDto>>(paginationSource);
         }
 
-        public async Task<List<CardResponseDto>> GetByGameweek(int gameweekId)
-        {
-            var cards = await _cardsRepo.GetByGameweek(gameweekId);
-            return _mapper.Map<List<CardResponseDto>>(cards);
-        }
+        
 
         public async Task<CardResponseDto> GetById(int id)
         {
@@ -62,18 +60,6 @@ namespace FantasyFootballGame.Application.Services.GameActions.Cards
             if (card == null)
                 throw new Exception($"Card with id {id} not found");
             return _mapper.Map<CardResponseDto>(card);
-        }
-
-        public async Task<List<CardResponseDto>> GetByPlayer(int playerId)
-        {
-            var cards = await _cardsRepo.GetByPlayer(playerId);
-            return _mapper.Map<List<CardResponseDto>>(cards);
-        }
-
-        public async Task<List<CardResponseDto>> GetByTeam(int teamId)
-        {
-            var cards = await _cardsRepo.GetByTeam(teamId);
-            return _mapper.Map<List<CardResponseDto>>(cards);
         }
 
         public async Task<CardResponseDto> Update(int id, UpdateCardDto dto)

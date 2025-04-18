@@ -1,9 +1,15 @@
+using FantasyFootballGame.API.Factories;
 using FantasyFootballGame.Application.DTOs.GameActions.Cards;
 using FantasyFootballGame.Application.Interfaces.GameActions.Cards;
+using FantasyFootballGame.Domain.Enums.User;
+using FantasyFootballGame.Domain.Models.Actions;
+using FantasyFootballGame.Domain.Models.Actions.Goals;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FantasyFootballGame.API.Controllers
+namespace FantasyFootballGame.API.Controllers.Actions
 {
+    [Authorize(Roles = $"{nameof(UserRole.Admin)} , {nameof(UserRole.Moderator)}")]
     [Route("api/[controller]")]
     [ApiController]
     public class CardsController : ControllerBase
@@ -19,39 +25,20 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var card = await _service.GetById(id);
-            return Ok(card);
+            return Ok(ApiResponseFactory.Success(card));
         }
 
         [HttpGet]
-        [Route("fixture/{fixtureId:int}")]
-        public async Task<IActionResult> GetByFixture(int fixtureId)
+        public async Task<IActionResult> All(
+            [FromQuery] int? teamId,
+            int? gameweekId,
+            int? playerId,
+            int? fixtureId,
+            int page = 1,
+            int pageSize = 10)
         {
-            var cards = await _service.GetByFixture(fixtureId);
-            return Ok(cards);
-        }
-
-        [HttpGet]
-        [Route("gameweek/{gameweekId:int}")]
-        public async Task<IActionResult> GetByGameweek(int gameweekId)
-        {
-            var cards = await _service.GetByGameweek(gameweekId);
-            return Ok(cards);
-        }
-
-        [HttpGet]
-        [Route("player/{playerId:int}")]
-        public async Task<IActionResult> GetByPlayer(int playerId)
-        {
-            var cards = await _service.GetByPlayer(playerId);
-            return Ok(cards);
-        }
-
-        [HttpGet]
-        [Route("team/{teamId:int}")]
-        public async Task<IActionResult> GetByTeam(int teamId)
-        {
-            var cards = await _service.GetByTeam(teamId);
-            return Ok(cards);
+            var cards = await _service.GetAllWithPagination(page, pageSize, playerId, teamId, fixtureId, gameweekId);
+            return Ok(ApiResponseFactory.Success(cards));
         }
 
         [HttpPut]
@@ -59,14 +46,14 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCardDto dto)
         {
             var card = await _service.Update(id, dto);
-            return Ok(card);
+            return Ok(ApiResponseFactory.Success(card, "Card updated successfully"));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCardDto dto)
         {
             var card = await _service.Create(dto);
-            return Ok(card);
+            return Ok(ApiResponseFactory.Success(card, "Card created successfully"));
         }
 
         [HttpDelete]
@@ -74,7 +61,7 @@ namespace FantasyFootballGame.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _service.Delete(id);
-            return Ok("Card has been deleted");
+            return Ok(ApiResponseFactory.Success(true, "Card has been deleted"));
         }
     }
-} 
+}
