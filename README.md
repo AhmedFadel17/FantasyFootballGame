@@ -42,3 +42,55 @@ FantasyFootballGame is a fantasy football backend system built with **ASP.NET Co
 ```bash
 git clone https://github.com/AhmedFadel17/FantasyFootballGame.git
 cd FantasyFootballGame
+```
+---
+## Setup Identity Server
+### 1- Update the connection string in appsettings.json:
+```c#
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SQL_SERVER;Database=FantasyFootballISDB;Trusted_Connection=True;"
+}
+```
+---
+
+### 2- Apply Migrations & Seed the Database
+```bash
+dotnet ef database update
+```
+---
+
+### 3- Run the API
+```bash
+dotnet run
+```
+The Identity server will now be running at:
+```bash
+https://localhost:7245
+```
+---
+
+## Setup API
+### 1- Update the connection string in appsettings.json:
+```c#
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SQL_SERVER;Database=FantasyFootballDB;Trusted_Connection=True;"
+}
+```
+---
+
+### 2- Apply Migrations & Seed the Database
+```bash
+dotnet ef database update
+```
+---
+
+### 3- Run the API
+```bash
+dotnet run
+```
+The API will now be running at:
+```bash
+https://localhost:7057
+```
+---
+
