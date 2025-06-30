@@ -30,6 +30,16 @@ builder.Services.AddIdentityServer(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // <-- your frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Only if you're using cookies or auth headers
+    });
+});
 
 var app = builder.Build();
 
@@ -47,6 +57,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseIdentityServer();
+app.UseCors("AllowReactApp");
+
 app.UseAuthorization();
 
 app.MapControllers();

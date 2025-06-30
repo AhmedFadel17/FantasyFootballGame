@@ -32,6 +32,7 @@ namespace FantasyFootballGame.DataAccess.Repositories.Players
             .FilterByMaxPrice(maxPrice)
             .FilterByStatus(status)
             .FilterByTeam(teamId)
+            .Include(p => p.Team)
             .FilterByShirtNumber(shirtNumber);
             var totalCount=await query.CountAsync();
             var players=await query.Paginate(page, pageSize).ToListAsync();

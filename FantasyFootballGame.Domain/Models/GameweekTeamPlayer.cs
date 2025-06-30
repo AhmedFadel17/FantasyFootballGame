@@ -9,6 +9,7 @@ namespace FantasyFootballGame.Domain.Models
         public int PlayerId { get; set; }
         public int FantasyTeamPlayerId { get; set; }
         public bool IsStarting { get; set; }
+        public int PosNum { get; set; }
         public bool IsCaptain { get; set; }
         public bool IsViceCaptain { get; set; }
         public int Points { get; set; }

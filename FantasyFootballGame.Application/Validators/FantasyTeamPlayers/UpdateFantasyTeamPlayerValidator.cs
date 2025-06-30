@@ -17,9 +17,6 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeamPlayers
                 .WithMessage("Player does not exist.")
                 .When(p => p.PlayerId.HasValue);
 
-            RuleFor(p => p.Slot)
-                .IsInEnum().WithMessage("Invalid player slot selected.")
-                .When(p => p.Slot.HasValue);
         }
     }
 }

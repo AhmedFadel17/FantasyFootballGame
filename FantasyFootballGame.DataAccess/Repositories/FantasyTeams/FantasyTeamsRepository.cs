@@ -10,9 +10,14 @@ namespace FantasyFootballGame.DataAccess.Repositories.FantasyTeams
         {
         }
 
-        public async Task<FantasyTeam> GetByUserId(int userId)
+        public async Task<FantasyTeam> GetByUserId(Guid userId)
         {
-            return await _dbSet.Where(t => t.UserId==userId).FirstAsync();
+            return await _dbSet
+        .Where(t => t.UserId == userId)
+        .Include(t => t.Players)
+            .ThenInclude(p => p.Player)
+                .ThenInclude(pp => pp.Team)
+        .FirstOrDefaultAsync();
         }
     }
 }

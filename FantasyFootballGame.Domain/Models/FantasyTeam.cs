@@ -9,8 +9,9 @@ namespace FantasyFootballGame.Domain.Models
         public required string Name { get; set; }
         public int TotalPoints { get; set; } = 0;
         public double SquadValue { get; set; } = 100;
-        public double InTheBank { get; set; } = 100;
-        public int UserId { get; set; }
+        public double InTheBank { get; set; } = 0;
+        public int FreeTransfers { get; set; } = 1;
+        public Guid UserId { get; set; }
 
         [JsonIgnore]
         public IEnumerable<FantasyTeamPlayer>? Players { get; set; }

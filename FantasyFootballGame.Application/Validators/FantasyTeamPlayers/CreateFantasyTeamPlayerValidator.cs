@@ -15,8 +15,6 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeamPlayers
                 .MustAsync(async (id, cancellation) => await playersRepository.Exists(t => t.Id == id))
                 .WithMessage("Player does not exist.");
 
-            RuleFor(p => p.Slot)
-                .IsInEnum().WithMessage("Invalid player slot selected.");
         }
     }
 }

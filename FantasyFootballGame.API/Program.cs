@@ -33,6 +33,16 @@ await builder.Services.AddApplicationServices();
 var identitySettings = builder.Configuration.GetJsonSection<IdentityServerSettings>("IdentityServerSettings");
 builder.Services.AddSingleton<IdentityServerSettings>(identitySettings);
 builder.Services.AddCustomAuthentication(identitySettings);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // <-- your frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Only if you're using cookies or auth headers
+    });
+});
 var app = builder.Build();
 
 // Check for seeding command
@@ -97,8 +107,9 @@ app.UseAuthentication();
 
 app.UseRouting(); 
 //app.UseMiddleware<BadRequestMiddleware>();
-app.UseMiddleware<ExceptionHandlingMiddleware>(); 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

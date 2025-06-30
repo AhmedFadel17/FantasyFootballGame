@@ -16,7 +16,7 @@ namespace FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers
 
         }
 
-        public async Task<IEnumerable<GameweekTeamPlayer>> GetByUserId(int userId)
+        public async Task<IEnumerable<GameweekTeamPlayer>> GetByUserId(Guid userId)
         {
             return await _dbSet
                 .Include(p => p.FantasyTeamPlayer)

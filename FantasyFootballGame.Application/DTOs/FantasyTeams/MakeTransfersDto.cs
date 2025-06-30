@@ -4,7 +4,6 @@ namespace FantasyFootballGame.Application.DTOs.FantasyTeams
 {
     public record MakeTransfersDto
     {
-        public required int FantasyTeamId { get; set; }
         public required List<CreateTransferDto> Transfers {  get; set; }
     }
 }

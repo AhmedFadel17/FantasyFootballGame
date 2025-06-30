@@ -2,6 +2,7 @@
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.Interfaces.Transfers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
+using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
@@ -18,6 +19,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
         private readonly IGameweekTeamsRepository _gameweekTeamsRepository;
         private readonly IGameweekTeamPlayersRepository _gameweekTeamPlayersRepository;
         private readonly IGameweeksRepository _gameweeksRepository;
+        private readonly IFantasyTeamsRepository _fantasyTeamsRepository;
         private readonly IMapper _mapper;
         private readonly IValidator<MakeTransfersDto> _makeTransfersValidator;
 
@@ -27,6 +29,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
             IGameweekTeamsRepository gameweekTeamsRepository,
             IGameweekTeamPlayersRepository gameweekTeamPlayersRepository,
             IGameweeksRepository gameweeksRepository,
+            IFantasyTeamsRepository fantasyTeamsRepository,
             IMapper mapper,
             IValidator<MakeTransfersDto> makeTransfersValidator)
         {
@@ -37,25 +40,28 @@ namespace FantasyFootballGame.Application.Services.Transfers
             _gameweekTeamPlayersRepository = gameweekTeamPlayersRepository;
             _gameweeksRepository = gameweeksRepository;
             _makeTransfersValidator = makeTransfersValidator;
+            _fantasyTeamsRepository = fantasyTeamsRepository;
         }
 
-        public async Task Create(MakeTransfersDto dto)
+        public async Task Create(Guid userId,MakeTransfersDto dto)
         {
             await _makeTransfersValidator.ValidateAndThrowAsync(dto);
             var transfers = dto.Transfers;
-            var fantasyTeamId = dto.FantasyTeamId;
+            var fantasyTeam = await _fantasyTeamsRepository.GetByUserId(userId);
+            if (fantasyTeam == null)
+                throw new Exception("No Fantasy team for user");
             var currentGameweek = await _gameweeksRepository.GetCurrentGameweek();
             if (currentGameweek == null)
                 throw new Exception("No active gameweek found");
-            var gameweekTeam = await _gameweekTeamsRepository.GetCurrentGameweekTeam(fantasyTeamId, currentGameweek.Id);
+            var gameweekTeam = await _gameweekTeamsRepository.GetCurrentGameweekTeam(fantasyTeam.Id, currentGameweek.Id);
             bool hasUnlimitedTransfers = gameweekTeam.HasUnlimitedTransfers;
-            int freeTransfers = gameweekTeam.FreeTransfers;
+            int freeTransfers = fantasyTeam.FreeTransfers;
             int transferCost = gameweekTeam.TransferCost;
             foreach (var tr in transfers)
             {
                 var playerOutId = tr.PlayerOutId;
                 var playerInId = tr.PlayerInId;
-                var playerOut = await _fanatsyTeamPlayersRepository.GetPlayerFromTeam(fantasyTeamId, playerOutId);
+                var playerOut = await _fanatsyTeamPlayersRepository.GetPlayerFromTeam(fantasyTeam.Id, playerOutId);
                 var gameweekPlayerOut = await _gameweekTeamPlayersRepository.GetPlayerFromTeam(gameweekTeam.Id, playerOutId);
 
                 playerOut.PlayerId = playerInId;
@@ -64,7 +70,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
                 gameweekPlayerOut.PlayerId = playerOutId;
                 _gameweekTeamPlayersRepository.Update(gameweekPlayerOut);
 
-                var transfer = _mapper.Map<Transfer>((fantasyTeamId, currentGameweek.Id, tr));
+                var transfer = _mapper.Map<Transfer>((fantasyTeam.Id, currentGameweek.Id, tr));
                 await _transfersRepository.Create(transfer);
 
                 if (!hasUnlimitedTransfers)
@@ -73,9 +79,12 @@ namespace FantasyFootballGame.Application.Services.Transfers
                     transferCost -= (freeTransfers == 0) ? 4 : 0;
                 }
             }
-            gameweekTeam.TotalTransfers += transfers.Count;
+            gameweekTeam.TransfersMade += transfers.Count;
             gameweekTeam.TransferCost += transferCost;
+            fantasyTeam.FreeTransfers=freeTransfers;
             _gameweekTeamsRepository.Update(gameweekTeam);
+            _fantasyTeamsRepository.Update(fantasyTeam);
+            await _fantasyTeamsRepository.Save();
             await _gameweekTeamsRepository.Save();
             await _fanatsyTeamPlayersRepository.Save();
             await _gameweekTeamPlayersRepository.Save();

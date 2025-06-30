@@ -39,19 +39,34 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             _updateValidator = updateValidator;
         }
 
-        public async Task<FantasyTeamResponseDto> Create(int userId,CreateFantasyTeamDto dto)
+        public async Task<FantasyTeamResponseDto> Create(Guid userId,CreateFantasyTeamDto dto)
         {
+            
             await _createValidator.ValidateAndThrowAsync(dto);
+            var existingTeam = await _teamsRepo.GetByUserId(userId);
+            if (existingTeam != null) throw new Exception("You already have a fantasy team.");
             var players = dto.Players;
             var teamValue = await CalculateTeamValue(players);
-            var team = _mapper.Map<FantasyTeam>((userId,teamValue.squadValue, teamValue.inTheBank, dto));
-
+            //var team = _mapper.Map<FantasyTeam>(dto);
+            var team = new FantasyTeam
+            {
+                Name = dto.Name,
+                SquadValue = teamValue.squadValue,
+                InTheBank = teamValue.inTheBank,
+                UserId = userId,
+            };
+            
             await _teamsRepo.Create(team);
             await _teamsRepo.Save();
 
             foreach (var playerDto in players)
             {
-                var player = _mapper.Map<FantasyTeamPlayer>((team.Id, playerDto));
+                //var player = _mapper.Map<FantasyTeamPlayer>((team.Id, playerDto));
+                var player = new FantasyTeamPlayer
+                {
+                    PlayerId = playerDto.PlayerId,
+                    FantasyTeamId=team.Id
+                };
                 await _fantasyPlayersRepo.Create(player);
             }
 
@@ -75,14 +90,14 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        public async Task<FantasyTeamResponseDto> GetByUserId(int id)
+        public async Task<FantasyTeamResponseDto> GetByUserId(Guid id)
         {
             var team = await _teamsRepo.GetByUserId(id);
             if (team == null) throw new KeyNotFoundException("No fantasy team for this user");
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        public async Task<FantasyTeamResponseDto> Update(int userId, UpdateFantasyTeamDto dto)
+        public async Task<FantasyTeamResponseDto> Update(Guid userId, UpdateFantasyTeamDto dto)
         {
             await _updateValidator.ValidateAndThrowAsync(dto);
             var team = await _teamsRepo.GetByUserId(userId);
@@ -93,7 +108,7 @@ namespace FantasyFootballGame.Application.Services.FantasyTeams
             return _mapper.Map<FantasyTeamResponseDto>(team);
         }
 
-        public async Task DeleteByUserId(int userId)
+        public async Task DeleteByUserId(Guid userId)
         {
             var team = await _teamsRepo.GetByUserId(userId);
             if (team == null) throw new KeyNotFoundException("No fantasy team for this user");

@@ -7,25 +7,15 @@ namespace FantasyFootballGame.API.Controllers
     [ApiController]
     public abstract class BaseController : ControllerBase
     {
-        // Sync version
-        protected IActionResult HandleUserId(Func<int, IActionResult> onSuccess)
+        protected async Task<IActionResult> HandleUserIdAsync(Func<Guid, Task<IActionResult>> onSuccess)
         {
             var userId = User.GetUserId();
-            if (userId == null)
-                return Unauthorized(ApiResponseFactory.Error("User not found."));
+            if (string.IsNullOrWhiteSpace(userId) || !Guid.TryParse(userId, out var guid))
+                return Unauthorized(ApiResponseFactory.Error("Invalid user ID."));
 
-            return onSuccess(userId.Value);
+            return await onSuccess(guid);
         }
 
-        // Async version
-        protected async Task<IActionResult> HandleUserIdAsync(Func<int, Task<IActionResult>> onSuccess)
-        {
-            var userId = User.GetUserId();
-            if (userId == null)
-                return Unauthorized(ApiResponseFactory.Error("User not found."));
-
-            return await onSuccess(userId.Value);
-        }
     }
 }
 

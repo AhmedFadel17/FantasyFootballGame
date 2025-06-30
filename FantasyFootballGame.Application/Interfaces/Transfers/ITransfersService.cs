@@ -9,6 +9,6 @@ namespace FantasyFootballGame.Application.Interfaces.Transfers
 {
     public interface ITransfersService
     {
-        Task Create(MakeTransfersDto dto);
+        Task Create(Guid userId, MakeTransfersDto dto);
     }
 }

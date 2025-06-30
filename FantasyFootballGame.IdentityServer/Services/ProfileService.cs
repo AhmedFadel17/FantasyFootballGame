@@ -29,20 +29,27 @@ namespace FantasyFootballGame.IdentityServer.Services
             if (user == null)
                 throw new ArgumentException("User not found");
 
-            //var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
             ClaimsPrincipal userClaims = await _claimsFactory.CreateAsync(user);
 
-            List<Claim> claims = userClaims.Claims.ToList();
-            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
+            var claims = userClaims.Claims
+                .Where(claim => context.RequestedClaimTypes.Contains(claim.Type))
+                .ToList();
+
+            // Add userId, username, and email manually
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName ?? ""));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email ?? ""));
+
+            // Add role claims
             if (_userManager.SupportsUserRole)
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 foreach (var roleName in roles)
                 {
-                    claims.Add(new Claim("role", roleName));
+                    claims.Add(new Claim(ClaimTypes.Role, roleName));
                     if (_roleManager.SupportsRoleClaims)
                     {
-                        IdentityRole role = await _roleManager.FindByNameAsync(roleName);
+                        var role = await _roleManager.FindByNameAsync(roleName);
                         if (role != null)
                         {
                             claims.AddRange(await _roleManager.GetClaimsAsync(role));

@@ -50,7 +50,9 @@ namespace FantasyFootballGame.Application.Mapping
 
             CreateMap<Player, PlayerResponseDto>()
                 .ForMember(dest => dest.Position, opt => opt.MapFrom(src => src.Position.ToString()))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team));
+
 
             CreateMap<CreatePlayerDto, Player>()
                 .ForMember(dest => dest.Position, opt => opt.MapFrom(src => Enum.Parse<PlayerPosition>(src.Position, false)))
@@ -69,6 +71,7 @@ namespace FantasyFootballGame.Application.Mapping
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<PlayerStatus>(src.Status, false)));
 
             CreateMap<FantasyTeam, FantasyTeamResponseDto>();
+
             CreateMap<(int userId,double squadValue,double inTheBank, CreateFantasyTeamDto), FantasyTeam>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.userId))
                 .ForMember(dest => dest.SquadValue, opt => opt.MapFrom(src => src.squadValue))

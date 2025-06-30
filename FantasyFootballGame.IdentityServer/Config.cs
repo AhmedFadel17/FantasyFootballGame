@@ -28,7 +28,9 @@ namespace FantasyFootballGame.IdentityServer
                     ClientId = "fantasy_web",
                     ClientSecrets = { new Secret("78195A38-7267-7267-8F2E-8F4EB3FECF34".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = { "openid", "profile", "email", "roles","fantasy_api" }
+                    AllowedCorsOrigins = { "http://localhost:3000" }, // Allow CORS for frontend
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "email", "roles","fantasy_api", "offline_access" }
                 },
                 new Client
                 {
@@ -38,14 +40,15 @@ namespace FantasyFootballGame.IdentityServer
                     RedirectUris = { "http://localhost:3000/signin-oidc" }, // Frontend redirect
                     PostLogoutRedirectUris = { "http://localhost:3000/signout-callback-oidc" },
                     AllowedCorsOrigins = { "http://localhost:3000" }, // Allow CORS for frontend
-                    AllowedScopes = { "openid", "profile", "email", "roles", "fantasy_api" }
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "email", "roles", "fantasy_api", "offline_access" }
                 },
                 new Client
                 {
                     ClientId = "admin_dashboard",
                     ClientSecrets = { new Secret("78195A38-7267-7267-8F2E-8F4EB3FECF34".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = { "admin_api" }
+                    AllowedScopes = { "admin_api", "offline_access" }
                 }
             };
 

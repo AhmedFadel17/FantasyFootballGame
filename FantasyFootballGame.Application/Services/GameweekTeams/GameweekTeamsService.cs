@@ -21,8 +21,9 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
         private readonly IGameweeksRepository _gameweeksRepo;
         private readonly IFanatsyTeamPlayersRepository _fantasyPlayersRepo;
         private readonly IGameweekTeamPlayersRepository _fanatsyTeamPlayersRepository;
-        private readonly IFantasyTeamsService _fantasyTeamsService;
         private readonly IGameweeksService _gameweeksService;
+        private readonly IFantasyTeamsRepository _fantasyTeamsRepository;
+
         private readonly SwapPlayersValidator _swapValidator;
 
 
@@ -31,7 +32,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             IGameweeksRepository gameweeksRepo,
             IFanatsyTeamPlayersRepository fantasyPlayersRepo,
             IGameweekTeamPlayersRepository fanatsyTeamPlayersRepository,
-            IFantasyTeamsService fantasyTeamsService,
+            IFantasyTeamsRepository fantasyTeamsRepository,
             IGameweeksService gameweeksService,
             SwapPlayersValidator swapValidator)
         {
@@ -39,7 +40,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             _gameweeksRepo = gameweeksRepo;
             _fantasyPlayersRepo = fantasyPlayersRepo;
             _fanatsyTeamPlayersRepository = fanatsyTeamPlayersRepository;
-            _fantasyTeamsService = fantasyTeamsService;
+            _fantasyTeamsRepository=fantasyTeamsRepository;
             _gameweeksService = gameweeksService;
             _swapValidator = swapValidator;
         }
@@ -62,28 +63,111 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             await _gameweekTeamsRepo.Create(gameweekTeam);
             await _gameweekTeamsRepo.Save();
             var fantasyTeamPlayers = await _fantasyPlayersRepo.GetByTeam(fantasyTeamId);
+            var startingPlayers = new List<GameweekTeamPlayer>();
+            var benchPlayers = new List<GameweekTeamPlayer>();
+
+            int gkCount = 0, defCount = 0, midCount = 0, fwdCount = 0;
             foreach (var fantasyPlayer in fantasyTeamPlayers)
             {
-                var gameweekPlayer = new GameweekTeamPlayer
+                var player = fantasyPlayer.Player; // assume Player is included via Include or eager loaded
+                var gwPlayer = new GameweekTeamPlayer
                 {
                     GameweekTeamId = gameweekTeam.Id,
                     FantasyTeamPlayerId = fantasyPlayer.Id,
-                    IsStarting = !(fantasyPlayer.Slot ==PlayerSlot.Def5 || fantasyPlayer.Slot == PlayerSlot.Mid4 || fantasyPlayer.Slot == PlayerSlot.Mid5),
-                    IsCaptain = fantasyPlayer.Slot==PlayerSlot.Gk1,
-                    IsViceCaptain = fantasyPlayer.Slot == PlayerSlot.Def1
+                    PlayerId = player.Id,
                 };
-                await _fanatsyTeamPlayersRepository.Create(gameweekPlayer);
+                switch (player.Position)
+                {
+                    case PlayerPosition.Goalkeeper:
+                        if (gkCount < 1)
+                        {
+                            gwPlayer.IsStarting = true;
+                            gkCount++;
+                            startingPlayers.Add(gwPlayer);
+                        }
+                        else
+                        {
+                            gwPlayer.IsStarting = false;
+                            benchPlayers.Insert(0, gwPlayer); // GK goes to pos 11
+                        }
+                        break;
+
+                    case PlayerPosition.Defender:
+                        if (defCount < 4)
+                        {
+                            gwPlayer.IsStarting = true;
+                            defCount++;
+                            startingPlayers.Add(gwPlayer);
+                        }
+                        else
+                        {
+                            gwPlayer.IsStarting = false;
+                            benchPlayers.Add(gwPlayer);
+                        }
+                        break;
+
+                    case PlayerPosition.Midfielder:
+                        if (midCount < 3)
+                        {
+                            gwPlayer.IsStarting = true;
+                            midCount++;
+                            startingPlayers.Add(gwPlayer);
+                        }
+                        else
+                        {
+                            gwPlayer.IsStarting = false;
+                            benchPlayers.Add(gwPlayer);
+                        }
+                        break;
+
+                    case PlayerPosition.Forward:
+                        if (fwdCount < 3)
+                        {
+                            gwPlayer.IsStarting = true;
+                            fwdCount++;
+                            startingPlayers.Add(gwPlayer);
+                        }
+                        else
+                        {
+                            gwPlayer.IsStarting = false;
+                            benchPlayers.Add(gwPlayer);
+                        }
+                        break;
+                }
+                // Set PosNum
+                int pos = 0;
+                foreach (var p in startingPlayers)
+                {
+                    p.PosNum = pos++;
+                }
+                for (int i = 0; i < benchPlayers.Count; i++)
+                {
+                    benchPlayers[i].PosNum = 11 + i;
+                }
+
+                // Assign Captain and Vice-Captain from starters
+                if (startingPlayers.Count >= 2)
+                {
+                    startingPlayers[0].IsCaptain = true;
+                    startingPlayers[1].IsViceCaptain = true;
+                }
+
+                var allPlayers = startingPlayers.Concat(benchPlayers);
+                foreach (var gameweekPlayer in allPlayers)
+                {
+                    await _fanatsyTeamPlayersRepository.Create(gameweekPlayer);
+                }
             }
 
             await _fanatsyTeamPlayersRepository.Save();
             return gameweekTeam;
         }
 
-        public async Task Swap(int userId,SwapPlayersDto dto)
+        public async Task Swap(Guid userId,SwapPlayersDto dto)
         {
             _swapValidator.SetUserContext(userId);
             await _swapValidator.ValidateAndThrowAsync(dto);
-            var fantasyTeam = await _fantasyTeamsService.GetByUserId(userId);
+            var fantasyTeam = await _fantasyTeamsRepository.GetByUserId(userId);
             var swaps = dto.Swaps;
             var currentGameweek = await _gameweeksService.GetCurrentGameweek();
             var gameweekTeam = await _gameweekTeamsRepo.GetCurrentGameweekTeam(fantasyTeam.Id, currentGameweek.Id);

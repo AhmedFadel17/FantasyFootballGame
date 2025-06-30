@@ -8,7 +8,6 @@ namespace FantasyFootballGame.Domain.Models
         public int Id { get; set; }
         public int PlayerId { get; set; }
         public int FantasyTeamId { get; set; }
-        public PlayerSlot Slot {  get; set; }
         
         [JsonIgnore]
         public Player? Player { get; set; }

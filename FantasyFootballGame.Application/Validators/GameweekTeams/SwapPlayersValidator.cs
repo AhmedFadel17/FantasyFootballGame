@@ -10,7 +10,7 @@ namespace FantasyFootballGame.Application.Validators.GameweekTeams
 {
     public class SwapPlayersValidator : AbstractValidator<SwapPlayersDto>
     {
-        private int _userId;
+        private Guid _userId;
 
         public SwapPlayersValidator(
             IGameweekTeamsRepository gameweekTeamsRepository,
@@ -43,7 +43,7 @@ namespace FantasyFootballGame.Application.Validators.GameweekTeams
                 .WithMessage("Invalid formation: You must have 1 starting GK, 1 bench GK, at least 3 DEFs, 2 MIDs, and 1 FWD.");
         }
 
-        public void SetUserContext(int userId)
+        public void SetUserContext(Guid userId)
         {
             _userId = userId;
         }

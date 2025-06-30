@@ -9,5 +9,6 @@ namespace FantasyFootballGame.Application.DTOs.FantasyTeams
         public int? TotalPoints { get; set; }
         public double? SquadValue { get; set; }
         public double? InTheBank { get; set; }
+        public int? FreeTransfers { get; set; }
     }
 }
