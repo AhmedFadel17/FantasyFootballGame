@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.Interfaces.Transfers;
+using FantasyFootballGame.Application.Validators.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
@@ -21,7 +22,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
         private readonly IGameweeksRepository _gameweeksRepository;
         private readonly IFantasyTeamsRepository _fantasyTeamsRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<MakeTransfersDto> _makeTransfersValidator;
+        private readonly MakeTransfersValidator _makeTransfersValidator;
 
         public TransfersService(
             ITransfersRepository transfersRepository,
@@ -31,7 +32,7 @@ namespace FantasyFootballGame.Application.Services.Transfers
             IGameweeksRepository gameweeksRepository,
             IFantasyTeamsRepository fantasyTeamsRepository,
             IMapper mapper,
-            IValidator<MakeTransfersDto> makeTransfersValidator)
+            MakeTransfersValidator makeTransfersValidator)
         {
             _fanatsyTeamPlayersRepository = fanatsyTeamPlayersRepository;
             _transfersRepository = transfersRepository;
@@ -45,11 +46,13 @@ namespace FantasyFootballGame.Application.Services.Transfers
 
         public async Task Create(Guid userId,MakeTransfersDto dto)
         {
-            await _makeTransfersValidator.ValidateAndThrowAsync(dto);
-            var transfers = dto.Transfers;
+
             var fantasyTeam = await _fantasyTeamsRepository.GetByUserId(userId);
             if (fantasyTeam == null)
                 throw new Exception("No Fantasy team for user");
+
+            await _makeTransfersValidator.ValidateAndThrowAsync(dto);
+            var transfers = dto.Transfers;
             var currentGameweek = await _gameweeksRepository.GetCurrentGameweek();
             if (currentGameweek == null)
                 throw new Exception("No active gameweek found");

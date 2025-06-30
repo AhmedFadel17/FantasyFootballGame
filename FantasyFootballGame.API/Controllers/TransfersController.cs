@@ -2,9 +2,7 @@
 using FantasyFootballGame.Application.DTOs.FantasyTeams;
 using FantasyFootballGame.Application.Interfaces.Transfers;
 using FantasyFootballGame.Domain.Enums.User;
-using FantasyFootballGame.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyFootballGame.API.Controllers

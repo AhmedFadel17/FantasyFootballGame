@@ -11,6 +11,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
     {
         private readonly IFantasyTeamsRepository _fantasyTeamsRepository;
         private readonly IPlayersRepository _playersRepository;
+        private int _fantasyTeamId;
 
         public MakeTransfersValidator(
             IFantasyTeamsRepository fantasyTeamsRepository,
@@ -20,10 +21,6 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
         {
             _fantasyTeamsRepository = fantasyTeamsRepository;
             _playersRepository = playersRepository;
-
-            RuleFor(t => t.FantasyTeamId)
-                .MustAsync(async (id, cancellation) => await fantasyTeamsRepository.Exists(t => t.Id == id))
-                .WithMessage("The specified FantasyTeamId does not exist.");
 
             RuleFor(t => t.Transfers)
                 .NotNull().WithMessage("Transfers list cannot be null.")
@@ -45,7 +42,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
 
         private async Task<bool> ValidateTransfers(MakeTransfersDto dto)
         {
-            var team = await _fantasyTeamsRepository.GetById(dto.FantasyTeamId);
+            var team = await _fantasyTeamsRepository.GetById(_fantasyTeamId);
             if (team == null) return false;
 
             var playerIdsInTeam = team.Players.Select(p => p.PlayerId).ToHashSet();
@@ -67,7 +64,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
 
         private async Task<bool> ValidateMaxPlayersPerTeam(MakeTransfersDto dto)
         {
-            var team = await _fantasyTeamsRepository.GetById(dto.FantasyTeamId);
+            var team = await _fantasyTeamsRepository.GetById(_fantasyTeamId);
             if (team == null) return false;
 
             var playerIdsInTeam = team.Players.Select(p => p.PlayerId).ToList();
@@ -94,6 +91,10 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
 
             return playerInIds.Distinct().Count() == playerInIds.Count &&
                    playerOutIds.Distinct().Count() == playerOutIds.Count;
+        }
+        public void SetUserContext(int fantasyTeamId)
+        {
+           _fantasyTeamId = fantasyTeamId;
         }
     }
 }
