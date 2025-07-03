@@ -92,7 +92,7 @@ namespace FantasyFootballGame.Application.Validators.FantasyTeams
             return playerInIds.Distinct().Count() == playerInIds.Count &&
                    playerOutIds.Distinct().Count() == playerOutIds.Count;
         }
-        public void SetUserContext(int fantasyTeamId)
+        public void SetFantsyTeamContext(int fantasyTeamId)
         {
            _fantasyTeamId = fantasyTeamId;
         }

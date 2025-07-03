@@ -50,14 +50,16 @@ namespace FantasyFootballGame.Application.Services.Transfers
             var fantasyTeam = await _fantasyTeamsRepository.GetByUserId(userId);
             if (fantasyTeam == null)
                 throw new Exception("No Fantasy team for user");
-
+            _makeTransfersValidator.SetFantsyTeamContext(fantasyTeam.Id);
             await _makeTransfersValidator.ValidateAndThrowAsync(dto);
             var transfers = dto.Transfers;
             var currentGameweek = await _gameweeksRepository.GetCurrentGameweek();
             if (currentGameweek == null)
                 throw new Exception("No active gameweek found");
             var gameweekTeam = await _gameweekTeamsRepository.GetCurrentGameweekTeam(fantasyTeam.Id, currentGameweek.Id);
-            bool hasUnlimitedTransfers = gameweekTeam.HasUnlimitedTransfers;
+            if (currentGameweek == null)
+                throw new Exception("No active gameweek team found");
+            bool hasUnlimitedTransfers = fantasyTeam.HasUnlimitedTransfers;
             int freeTransfers = fantasyTeam.FreeTransfers;
             int transferCost = gameweekTeam.TransferCost;
             foreach (var tr in transfers)
@@ -70,10 +72,17 @@ namespace FantasyFootballGame.Application.Services.Transfers
                 playerOut.PlayerId = playerInId;
                 _fanatsyTeamPlayersRepository.Update(playerOut);
 
-                gameweekPlayerOut.PlayerId = playerOutId;
+                gameweekPlayerOut.PlayerId = playerInId;
                 _gameweekTeamPlayersRepository.Update(gameweekPlayerOut);
 
-                var transfer = _mapper.Map<Transfer>((fantasyTeam.Id, currentGameweek.Id, tr));
+                //var transfer = _mapper.Map<Transfer>((fantasyTeam.Id, currentGameweek.Id, tr));
+                var transfer = new Transfer
+                {
+                    PlayerInId = playerInId,
+                    PlayerOutId = playerOutId,
+                    GameweekId=currentGameweek.Id,
+                    FantasyTeamId=fantasyTeam.Id
+                };
                 await _transfersRepository.Create(transfer);
 
                 if (!hasUnlimitedTransfers)

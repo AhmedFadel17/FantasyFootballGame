@@ -11,6 +11,7 @@ namespace FantasyFootballGame.Domain.Models
         public double SquadValue { get; set; } = 100;
         public double InTheBank { get; set; } = 0;
         public int FreeTransfers { get; set; } = 1;
+        public bool HasUnlimitedTransfers { get; set; } = true;
         public Guid UserId { get; set; }
 
         [JsonIgnore]

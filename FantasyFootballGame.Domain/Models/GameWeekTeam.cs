@@ -8,7 +8,7 @@ namespace FantasyFootballGame.Domain.Models
         public int FantasyTeamId { get; set; }
         public int GameweekId { get; set; }
         public int TotalPoints { get; set; }
-        public bool HasUnlimitedTransfers { get; set; } = false;
+        public int Chip { get; set; }=0;
         public int TransfersMade { get; set; } = 0;  
         public int TransferCost { get; set; } = 0;
         [JsonIgnore]

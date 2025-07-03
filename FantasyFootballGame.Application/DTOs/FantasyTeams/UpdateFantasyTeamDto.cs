@@ -10,5 +10,6 @@ namespace FantasyFootballGame.Application.DTOs.FantasyTeams
         public double? SquadValue { get; set; }
         public double? InTheBank { get; set; }
         public int? FreeTransfers { get; set; }
+        public bool? HasUnlimitedTransfers { get; set; }
     }
 }

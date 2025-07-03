@@ -55,7 +55,6 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             {
                 FantasyTeamId = fantasyTeamId,
                 GameweekId = currentGameweek.Id,
-                HasUnlimitedTransfers = true, 
                 TotalPoints = 0,
             };
 
