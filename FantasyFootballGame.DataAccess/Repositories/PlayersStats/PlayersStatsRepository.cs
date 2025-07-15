@@ -1,6 +1,7 @@
 ﻿using FantasyFootballGame.DataAccess.Data;
 using FantasyFootballGame.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FantasyFootballGame.DataAccess.Repositories.PlayersStats
 {
@@ -10,22 +11,25 @@ namespace FantasyFootballGame.DataAccess.Repositories.PlayersStats
         {
         }
 
-        public async Task<IEnumerable<TopStat>> GetTopGoalScorers(int limit)
+        public async Task<IEnumerable<TopStat>> GetTopPlayersByStat(
+    Expression<Func<PlayerStat, int>> statSelector,
+    int limit)
         {
             var list = await _dbSet
                 .Include(s => s.Player)
                 .ThenInclude(p => p.Team)
-                .OrderByDescending(s => s.GoalsScored)
+                .OrderByDescending(statSelector)
                 .Take(limit)
                 .Select(s => new TopStat
                 {
-                    Stat = s.GoalsScored,
+                    Stat = EF.Property<int>(s, ((MemberExpression)statSelector.Body).Member.Name),
                     Player = s.Player
                 })
                 .ToListAsync();
 
             return list;
         }
+
 
     }
 }

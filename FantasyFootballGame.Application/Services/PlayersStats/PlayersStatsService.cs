@@ -60,9 +60,40 @@ namespace FantasyFootballGame.Application.Services.PlayersStats
 
         public async Task<List<TopStatResponseDto>> GetTopGoalScorers(int limit)
         {
-            var stats = await _playersStatsRepo.GetTopGoalScorers(limit);
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.GoalsScored, limit);
             return _mapper.Map<List<TopStatResponseDto>>(stats);
         }
+
+        public async Task<List<TopStatResponseDto>> GetTopAssists(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.Assists, limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
+        }
+
+        public async Task<List<TopStatResponseDto>> GetTopCleanSheets(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.CleanSheets, limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
+        }
+
+        public async Task<List<TopStatResponseDto>> GetTopMinutesPlayed(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.MinutesPlayed, limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
+        }
+
+        public async Task<List<TopStatResponseDto>> GetTopSaves(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.Saves, limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
+        }
+
+        public async Task<List<TopStatResponseDto>> GetTopTotalPoints(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopPlayersByStat(s => s.TotalPoints, limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
+        }
+
 
         public async Task<PlayerStatsResponseDto> Update(int id, UpdatePlayerStatsDto dto)
         {

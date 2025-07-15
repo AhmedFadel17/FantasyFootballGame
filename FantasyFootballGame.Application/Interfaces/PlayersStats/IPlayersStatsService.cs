@@ -10,5 +10,10 @@ namespace FantasyFootballGame.Application.Interfaces.PlayersStats
         Task<PlayerStatsResponseDto> Create(CreatePlayerStatsDto dto);
         Task Delete(int id);
         Task<List<TopStatResponseDto>> GetTopGoalScorers(int limit);
+        Task<List<TopStatResponseDto>> GetTopAssists(int limit);
+        Task<List<TopStatResponseDto>> GetTopCleanSheets(int limit);
+        Task<List<TopStatResponseDto>> GetTopMinutesPlayed(int limit);
+        Task<List<TopStatResponseDto>> GetTopSaves(int limit);
+        Task<List<TopStatResponseDto>> GetTopTotalPoints(int limit);
     }
 } 

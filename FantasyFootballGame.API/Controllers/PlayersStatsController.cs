@@ -27,7 +27,40 @@ namespace FantasyFootballGame.API.Controllers
             var players = await _service.GetTopGoalScorers(limit??10);
             return Ok(ApiResponseFactory.Success(players));
         }
+        [HttpGet("top/assists")]
+        public async Task<IActionResult> GetTopAssists([FromQuery] int? limit = 10)
+        {
+            var players = await _service.GetTopAssists(limit ?? 10);
+            return Ok(ApiResponseFactory.Success(players));
+        }
 
-        
+        [HttpGet("top/cleansheets")]
+        public async Task<IActionResult> GetTopCleanSheets([FromQuery] int? limit = 10)
+        {
+            var players = await _service.GetTopCleanSheets(limit ?? 10);
+            return Ok(ApiResponseFactory.Success(players));
+        }
+
+        [HttpGet("top/minutes")]
+        public async Task<IActionResult> GetTopMinutesPlayed([FromQuery] int? limit = 10)
+        {
+            var players = await _service.GetTopMinutesPlayed(limit ?? 10);
+            return Ok(ApiResponseFactory.Success(players));
+        }
+
+        [HttpGet("top/saves")]
+        public async Task<IActionResult> GetTopSaves([FromQuery] int? limit = 10)
+        {
+            var players = await _service.GetTopSaves(limit ?? 10);
+            return Ok(ApiResponseFactory.Success(players));
+        }
+
+        [HttpGet("top/totalpoints")]
+        public async Task<IActionResult> GetTopTotalPoints([FromQuery] int? limit = 10)
+        {
+            var players = await _service.GetTopTotalPoints(limit ?? 10);
+            return Ok(ApiResponseFactory.Success(players));
+        }
+
     }
 }
