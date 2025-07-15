@@ -21,6 +21,8 @@ namespace FantasyFootballGame.Application.Validators.Teams
 
             RuleFor(t => t.ShirtImgSrc)
                 .MaximumLength(455).WithMessage("Shirt image source cannot exceed 455 characters.");
+            RuleFor(t => t.LogoSrc)
+                .MaximumLength(455).WithMessage("Logo image source cannot exceed 455 characters.");
         }
     }
 }

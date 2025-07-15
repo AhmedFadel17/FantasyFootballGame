@@ -12,8 +12,42 @@ namespace FantasyFootballGame.DataAccess.Repositories.GameweekTeams
 
         public async Task<GameweekTeam> GetCurrentGameweekTeam(int fantasyTeamId, int gameweekId)
         {
-            return await _dbSet.Where(t => t.GameweekId == gameweekId && t.FantasyTeamId == fantasyTeamId).FirstAsync();
+            var gameweekTeam = await _dbSet
+                .Where(t => t.GameweekId == gameweekId && t.FantasyTeamId == fantasyTeamId)
+                .Include(t => t.Players)
+                    .ThenInclude(p => p.Player)
+                        .ThenInclude(p => p.Team)
+                .FirstOrDefaultAsync();
+
+            if (gameweekTeam == null)
+                return null;
+
+            var teamIds = gameweekTeam.Players
+                .Select(p => p.Player.TeamId)
+                .Distinct()
+                .ToList();
+
+            var fixtures = await _context.Fixtures
+                .Where(f =>
+                    f.GameweekId == gameweekId )
+                    .Include(f => f.HomeTeam)
+    .Include(f => f.AwayTeam)
+                .ToListAsync();
+
+            // Use LINQ to assign upcoming fixtures without manual foreach
+            gameweekTeam.Players = gameweekTeam.Players
+                .Select(p =>
+                {
+                    var teamId = p.Player.TeamId;
+                    p.UpcomingFixture = fixtures.FirstOrDefault(f =>
+                        (f.HomeTeamId == teamId || f.AwayTeamId == teamId));
+                    return p;
+                })
+                .ToList();
+
+            return gameweekTeam;
         }
+
 
         public async Task<bool> IsCurrentGameweekTeam(int gameweekTeamId)
         {

@@ -1,4 +1,4 @@
-﻿using FantasyFootballGame.Domain.Enums;
+﻿using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.Application.DTOs.GameActions.Injuries
 {

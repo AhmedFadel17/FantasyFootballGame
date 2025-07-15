@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FantasyFootballGame.Domain.Models
 {
@@ -19,6 +20,9 @@ namespace FantasyFootballGame.Domain.Models
 
         [JsonIgnore]
         public Player? Player { get; set; }
+
+        [NotMapped,JsonIgnore]
+        public Fixture? UpcomingFixture { get; set; }
 
         [JsonIgnore]
         public FantasyTeamPlayer? FantasyTeamPlayer { get; set; }

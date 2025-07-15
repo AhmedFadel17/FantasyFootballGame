@@ -1,6 +1,6 @@
 ﻿using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.Players;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.Application.Interfaces.Players
 {

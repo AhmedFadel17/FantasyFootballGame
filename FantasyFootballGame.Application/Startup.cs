@@ -47,6 +47,8 @@ using FantasyFootballGame.Application.Interfaces.GameActions.Saves;
 using FantasyFootballGame.Application.Services.GameActions.Saves;
 using FantasyFootballGame.Application.Interfaces.GameActions.Penalties;
 using FantasyFootballGame.Application.Services.GameActions.Penalties;
+using FantasyFootballGame.Application.Interfaces.PlayersStats;
+using FantasyFootballGame.Application.Services.PlayersStats;
 
 namespace FantasyFootballGame.Application
 {
@@ -132,6 +134,7 @@ namespace FantasyFootballGame.Application
             services.AddScoped<IGameweeksService, GameweeksService>();
             services.AddScoped<IGameweekTeamsService, GameweekTeamsService>();
             services.AddScoped<ITransfersService, TransfersService>();
+            services.AddScoped<IPlayersStatsService,PlayersStatsService>();
             //Goals
             services.AddScoped<IGoalsService,GoalsService>();
             services.AddScoped<IAssistsService, AssistsService>();

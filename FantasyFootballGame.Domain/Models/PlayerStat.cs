@@ -1,12 +1,15 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace FantasyFootballGame.Domain.Models
 {
     public record PlayerStat
     {
         public int Id { get; set; }
         public int PlayerId { get; set; }
-        public int GameweekId { get; set; }
-        public int FixtureId { get; set; }
+        public int SeasonNumber { get; set; }
+        public int MatchesPlayed { get; set; }
+        public int MatchesStarted { get; set; }
         public int MinutesPlayed { get; set; }
         public int GoalsScored { get; set; }
         public int Assists { get; set; }
@@ -18,6 +21,9 @@ namespace FantasyFootballGame.Domain.Models
         public int YellowCards { get; set; }
         public int RedCards { get; set; }
         public int BonusPoints { get; set; }
-        public int Points { get; set; }
+        public int TotalPoints { get; set; }
+
+        [JsonIgnore]
+        public Player? Player { get; set; }
     }
 }

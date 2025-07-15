@@ -3,8 +3,8 @@ using CsvHelper.Configuration;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
 using FantasyFootballGame.Domain.Models;
-using FantasyFootballGame.Domain.Enums;
 using System.Globalization;
+using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.DataAccess.Seeds
 {

@@ -10,7 +10,7 @@ namespace FantasyFootballGame.Domain.Models
         public string MainColor { get; set; }
         public string SecondaryColor { get; set; }
         public string ShirtImgSrc { get; set; }
-
+        public string LogoSrc { get; set; }
         [JsonIgnore]
         public IEnumerable<Player>? Players { get; set; }
 

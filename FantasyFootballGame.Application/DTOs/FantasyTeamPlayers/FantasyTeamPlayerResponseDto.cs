@@ -1,4 +1,5 @@
-﻿using FantasyFootballGame.Application.DTOs.Players;
+﻿using FantasyFootballGame.Application.DTOs.Fixtures;
+using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Domain.Enums;
 
 namespace FantasyFootballGame.Application.DTOs.FantasyTeamPlayers

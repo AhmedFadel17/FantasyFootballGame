@@ -3,7 +3,7 @@ using FantasyFootballGame.Application.DTOs.Common;
 using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.Application.Interfaces.Players;
 using FantasyFootballGame.DataAccess.Repositories.Players;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 using FantasyFootballGame.Domain.Models;
 using FluentValidation;
 

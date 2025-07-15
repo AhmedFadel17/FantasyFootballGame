@@ -1,4 +1,5 @@
 ﻿using FantasyFootballGame.Application.DTOs.Teams;
+using FantasyFootballGame.Domain.Enums.Fixtures;
 
 namespace FantasyFootballGame.Application.DTOs.Fixtures
 {
@@ -17,6 +18,8 @@ namespace FantasyFootballGame.Application.DTOs.Fixtures
         public int AwayTeamScore { get; set; }
 
         public DateTime MatchTime { get; set; }
+
+        public string Status { get; set; }
 
         public TeamResponseDto HomeTeam { get; set; }
 

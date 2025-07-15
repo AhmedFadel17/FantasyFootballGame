@@ -1,5 +1,5 @@
 using FantasyFootballGame.Domain.Models;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 namespace FantasyFootballGame.DataAccess.Extentions.Players
 {
     public static class PlayersExtensions

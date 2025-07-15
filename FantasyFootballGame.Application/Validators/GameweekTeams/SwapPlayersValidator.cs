@@ -2,7 +2,7 @@
 using FantasyFootballGame.Application.Validators.Swaps;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 using FluentValidation;
 
 

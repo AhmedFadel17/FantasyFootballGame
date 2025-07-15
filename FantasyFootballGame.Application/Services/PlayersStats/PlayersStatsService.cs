@@ -35,7 +35,7 @@ namespace FantasyFootballGame.Application.Services.PlayersStats
         public async Task<PlayerStatsResponseDto> Create(CreatePlayerStatsDto dto)
         {
             await _createValidator.ValidateAndThrowAsync(dto);
-            var stats = _mapper.Map<PlayerGameweekForm>(dto);
+            var stats = _mapper.Map<PlayerStat>(dto);
             await _playersStatsRepo.Create(stats);
             await _playersStatsRepo.Save();
             return _mapper.Map<PlayerStatsResponseDto>(stats);
@@ -56,6 +56,12 @@ namespace FantasyFootballGame.Application.Services.PlayersStats
             if (stats == null)
                 throw new Exception($"Player stats with id {id} not found");
             return _mapper.Map<PlayerStatsResponseDto>(stats);
+        }
+
+        public async Task<List<TopStatResponseDto>> GetTopGoalScorers(int limit)
+        {
+            var stats = await _playersStatsRepo.GetTopGoalScorers(limit);
+            return _mapper.Map<List<TopStatResponseDto>>(stats);
         }
 
         public async Task<PlayerStatsResponseDto> Update(int id, UpdatePlayerStatsDto dto)

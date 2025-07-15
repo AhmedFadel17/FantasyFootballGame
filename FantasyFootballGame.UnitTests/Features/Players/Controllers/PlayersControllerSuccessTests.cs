@@ -5,9 +5,9 @@ using FantasyFootballGame.API.Controllers;
 using AutoFixture.Xunit2;
 using Microsoft.AspNetCore.Mvc;
 using FantasyFootballGame.Application.DTOs.Players;
-using FantasyFootballGame.Domain.Enums;
 using FluentAssertions;
 using FantasyFootballGame.Application.DTOs.Common;
+using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.UnitTests.Features.Players.Controllers.SuccessCases
 {

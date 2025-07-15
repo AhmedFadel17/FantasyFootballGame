@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFootballGame.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250630065504_UpdateFantasyTeamSchema")]
-    partial class UpdateFantasyTeamSchema
+    [Migration("20250707193838_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -370,6 +370,9 @@ namespace FantasyFootballGame.DataAccess.Migrations
                     b.Property<int>("FreeTransfers")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasUnlimitedTransfers")
+                        .HasColumnType("bit");
+
                     b.Property<double>("InTheBank")
                         .HasColumnType("float");
 
@@ -500,14 +503,14 @@ namespace FantasyFootballGame.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Chip")
+                        .HasColumnType("int");
+
                     b.Property<int>("FantasyTeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("GameweekId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("HasUnlimitedTransfers")
-                        .HasColumnType("bit");
 
                     b.Property<int>("TotalPoints")
                         .HasColumnType("int");
@@ -1025,7 +1028,7 @@ namespace FantasyFootballGame.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("FantasyFootballGame.Domain.Models.GameweekTeam", "GameweekTeam")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("GameweekTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1071,6 +1074,11 @@ namespace FantasyFootballGame.DataAccess.Migrations
             modelBuilder.Entity("FantasyFootballGame.Domain.Models.Gameweek", b =>
                 {
                     b.Navigation("Fixtures");
+                });
+
+            modelBuilder.Entity("FantasyFootballGame.Domain.Models.GameweekTeam", b =>
+                {
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("FantasyFootballGame.Domain.Models.Team", b =>

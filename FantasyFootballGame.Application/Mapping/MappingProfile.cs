@@ -23,8 +23,12 @@ using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.Domain.Models.Actions;
 using FantasyFootballGame.Domain.Models.Actions.Goals;
 using FantasyFootballGame.Domain.Models.Actions.Penalties;
-using FantasyFootballGame.Domain.Enums;
 using System;
+using FantasyFootballGame.Application.DTOs.GameweekTeams;
+using FantasyFootballGame.Application.DTOs.GameweekTeamPlayers;
+using FantasyFootballGame.Domain.Enums.Players;
+using FantasyFootballGame.Domain.Enums.Fixtures;
+using FantasyFootballGame.Application.DTOs.PlayersStats;
 
 namespace FantasyFootballGame.Application.Mapping
 {
@@ -35,14 +39,15 @@ namespace FantasyFootballGame.Application.Mapping
             CreateMap(typeof(PaginationSource<>), typeof(PaginationDto<>))
                 .ConvertUsing(typeof(PaginationConverter<,>));
 
-
             CreateMap<Gameweek, GameweekResponseDto>();
             CreateMap<CreateGameweekDto, Gameweek>();
             CreateMap<UpdateGameweekDto, Gameweek>();
 
             CreateMap<Fixture, FixtureResponseDto>();
             CreateMap<CreateFixtureDto, Fixture>();
-            CreateMap<UpdateFixtureDto, Fixture>();
+            CreateMap<UpdateFixtureDto, Fixture>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<FixtureStatus>(src.Status, false)));
+
 
             CreateMap<Team,TeamResponseDto>();
             CreateMap<CreateTeamDto, Team>();
@@ -138,6 +143,16 @@ namespace FantasyFootballGame.Application.Mapping
             CreateMap<Bonus, BonusPointResponseDto>();
             CreateMap<CreateBonusPointsDto, BonusPointsResponseDto>()
                 .ForMember(dest => dest.BonusPoints, opt => opt.Ignore());
+
+            CreateMap<GameweekTeamPlayer, GameweekTeamPlayerResponseDto>();
+
+
+            CreateMap<GameweekTeam, GameweekTeamResponseDto>()
+                .ForMember(dest => dest.Starters, opt => opt.MapFrom(src => src.Players.Where(p => p.IsStarting == true)))
+                .ForMember(dest => dest.Benched, opt => opt.MapFrom(src => src.Players.Where(p => p.IsStarting == false)));
+
+            CreateMap<PlayerStat, PlayerStatsResponseDto>();
+            CreateMap<TopStat, TopStatResponseDto>();
 
         }
     }

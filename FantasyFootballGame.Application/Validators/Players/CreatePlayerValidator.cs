@@ -1,6 +1,6 @@
 ﻿using FantasyFootballGame.Application.DTOs.Players;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 using FluentValidation;
 
 namespace FantasyFootballGame.Application.Validators.Players
@@ -33,6 +33,21 @@ namespace FantasyFootballGame.Application.Validators.Players
             RuleFor(p => p.TeamId)
                 .MustAsync(async (teamId, cancellation) => await teamRepository.Exists(t => t.Id == teamId))
                 .WithMessage("The specified TeamId does not exist.");
+
+            RuleFor(p => p.Height)
+                .InclusiveBetween(1, 300).WithMessage("Height must be between 1 and 300.");
+            RuleFor(p => p.Weight)
+                .InclusiveBetween(1, 300).WithMessage("Weight must be between 1 and 300.");
+            RuleFor(p => p.ImageSrc)
+                .NotEmpty().WithMessage("Image Src is required.")
+                .MaximumLength(455).WithMessage("image source cannot exceed 455 characters.");
+
+            RuleFor(p => p.Country)
+                .NotEmpty().WithMessage("Country is required.")
+                .MaximumLength(455).WithMessage("Country cannot exceed 99 characters.");
+
+            RuleFor(p => p.DateOfBirth)
+                .NotEmpty().WithMessage("Date Of Birth is required.");
         }
     }
 }

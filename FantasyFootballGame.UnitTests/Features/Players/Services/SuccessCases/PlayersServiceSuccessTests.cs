@@ -2,11 +2,11 @@ using FantasyFootballGame.UnitTests.AutoFixture;
 using Moq;
 using AutoFixture.Xunit2;
 using FantasyFootballGame.Application.DTOs.Players;
-using FantasyFootballGame.Domain.Enums;
 using FluentAssertions;
 using FantasyFootballGame.Application.Services.Players;
 using FantasyFootballGame.Domain.Models;
 using FantasyFootballGame.DataAccess.Repositories.Players;
+using FantasyFootballGame.Domain.Enums.Players;
 
 
 namespace FantasyFootballGame.UnitTests.Features.Players.Services.SuccessCases

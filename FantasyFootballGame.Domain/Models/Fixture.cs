@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FantasyFootballGame.Domain.Enums.Fixtures;
+using System.Text.Json.Serialization;
 
 namespace FantasyFootballGame.Domain.Models
 {
@@ -17,6 +18,8 @@ namespace FantasyFootballGame.Domain.Models
         public int AwayTeamScore { get; set; }
 
         public DateTime MatchTime { get; set; }
+
+        public FixtureStatus Status { get; set; } = 0;
 
         [JsonIgnore]
         public Team HomeTeam { get; set; }

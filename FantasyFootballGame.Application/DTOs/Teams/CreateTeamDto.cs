@@ -8,5 +8,6 @@ namespace FantasyFootballGame.Application.DTOs.Teams
         public required string MainColor { get; set; }
         public required string SecondaryColor { get; set; }
         public required string ShirtImgSrc { get; set; }
+        public required string LogoSrc { get; set; }
     }
 }

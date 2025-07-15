@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FantasyFootballGame.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250701090735_FantasyTeamsSchemaUpdate")]
-    partial class FantasyTeamsSchemaUpdate
+    [Migration("20250713231713_AddStatusColumnToFixtures")]
+    partial class AddStatusColumnToFixtures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -449,6 +449,9 @@ namespace FantasyFootballGame.DataAccess.Migrations
                     b.Property<DateTime>("MatchTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AwayTeamId");
@@ -581,7 +584,21 @@ namespace FantasyFootballGame.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageSrc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -602,6 +619,9 @@ namespace FantasyFootballGame.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -678,6 +698,10 @@ namespace FantasyFootballGame.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogoSrc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1028,7 +1052,7 @@ namespace FantasyFootballGame.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("FantasyFootballGame.Domain.Models.GameweekTeam", "GameweekTeam")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("GameweekTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1074,6 +1098,11 @@ namespace FantasyFootballGame.DataAccess.Migrations
             modelBuilder.Entity("FantasyFootballGame.Domain.Models.Gameweek", b =>
                 {
                     b.Navigation("Fixtures");
+                });
+
+            modelBuilder.Entity("FantasyFootballGame.Domain.Models.GameweekTeam", b =>
+                {
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("FantasyFootballGame.Domain.Models.Team", b =>

@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using FantasyFootballGame.Application.DTOs.Players;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 using FantasyFootballGame.Domain.Models;
 using Moq;
 

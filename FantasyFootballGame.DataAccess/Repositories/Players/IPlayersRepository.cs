@@ -1,4 +1,4 @@
-﻿using FantasyFootballGame.Domain.Enums;
+﻿using FantasyFootballGame.Domain.Enums.Players;
 using FantasyFootballGame.Domain.Models;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Players

@@ -18,6 +18,18 @@ namespace FantasyFootballGame.API.Controllers
         }
 
         [Authorize(Roles = nameof(UserRole.Player))]
+        [HttpGet]
+        public Task<IActionResult> GetTeam()
+        {
+            return HandleUserIdAsync(async userId =>
+            {
+                var team=await _service.GetTeam(userId);
+                return Ok(ApiResponseFactory.Success(team));
+            });
+
+        }
+
+        [Authorize(Roles = nameof(UserRole.Player))]
         [HttpPost]
         [Route("swap")]
         public Task<IActionResult> SwapPlayers([FromBody] SwapPlayersDto dto)

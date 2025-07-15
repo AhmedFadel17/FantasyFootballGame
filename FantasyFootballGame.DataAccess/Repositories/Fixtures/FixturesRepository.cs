@@ -15,10 +15,14 @@ namespace FantasyFootballGame.DataAccess.Repositories.Fixtures
         public async Task<(IEnumerable<Fixture>, int)> GetAllWithPagination(int page, int pageSize, int? teamId, int? gameweekId, int? playerId,DateOnly? date)
         {
             var query = _dbSet.AsQueryable()
+                .Include(f =>f.HomeTeam)
+                .Include(f => f.AwayTeam)
             .FilterByTeam(teamId)
             .FilterByGameweek(gameweekId)
             .FilterByDay(date)
-            .FilterByPlayer(playerId);
+            .FilterByPlayer(playerId)
+                .OrderBy(f=>f.MatchTime)
+            ;
             var totalCount = await query.CountAsync();
             var fixtures = await query.Paginate(page, pageSize).ToListAsync();
 

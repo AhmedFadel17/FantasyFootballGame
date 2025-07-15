@@ -9,7 +9,7 @@ using FantasyFootballGame.DataAccess.Repositories.FantasyTeams;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeamPlayers;
 using FantasyFootballGame.DataAccess.Repositories.GameweekTeams;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 using FantasyFootballGame.Domain.Models;
 using FluentValidation;
 
@@ -23,7 +23,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
         private readonly IGameweekTeamPlayersRepository _fanatsyTeamPlayersRepository;
         private readonly IGameweeksService _gameweeksService;
         private readonly IFantasyTeamsRepository _fantasyTeamsRepository;
-
+        private readonly IMapper _mapper;
         private readonly SwapPlayersValidator _swapValidator;
 
 
@@ -34,6 +34,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             IGameweekTeamPlayersRepository fanatsyTeamPlayersRepository,
             IFantasyTeamsRepository fantasyTeamsRepository,
             IGameweeksService gameweeksService,
+            IMapper mapper,
             SwapPlayersValidator swapValidator)
         {
             _gameweekTeamsRepo = gameweekTeamsRepo;
@@ -43,6 +44,7 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
             _fantasyTeamsRepository=fantasyTeamsRepository;
             _gameweeksService = gameweeksService;
             _swapValidator = swapValidator;
+            _mapper = mapper;
         }
 
         public async Task<GameweekTeam> Create(int fantasyTeamId)
@@ -159,6 +161,20 @@ namespace FantasyFootballGame.Application.Services.GameweekTeams
 
             await _fanatsyTeamPlayersRepository.Save();
             return gameweekTeam;
+        }
+
+        public async Task<GameweekTeamResponseDto> GetTeam(Guid userId)
+        {
+            var currentGameweek = await _gameweeksRepo.GetCurrentGameweek();
+            if (currentGameweek == null)
+                throw new Exception("No active gameweek found");
+            var fantasyTeam = await _fantasyTeamsRepository.GetByUserId(userId);
+            if (fantasyTeam == null)
+                throw new Exception("No fantasy team for this user");
+            var team =await _gameweekTeamsRepo.GetCurrentGameweekTeam(fantasyTeam.Id, currentGameweek.Id);
+            if (team == null)
+                throw new Exception("No gameweek team for this user");
+            return _mapper.Map<GameweekTeamResponseDto>(team);
         }
 
         public async Task Swap(Guid userId,SwapPlayersDto dto)

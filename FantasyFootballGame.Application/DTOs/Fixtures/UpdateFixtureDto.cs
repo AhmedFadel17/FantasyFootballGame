@@ -9,5 +9,7 @@ namespace FantasyFootballGame.Application.DTOs.Fixtures
         public int? HomeTeamScore { get; set; }
         public int? AwayTeamScore { get; set; }
         public DateTime? MatchTime { get; set; }
+        public string? Status { get; set; }
+
     }
 }

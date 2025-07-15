@@ -17,5 +17,8 @@ namespace FantasyFootballGame.Domain.Models
         [JsonIgnore]
         public Gameweek? Gameweek { get; set; }
 
+        [JsonIgnore]
+        public IEnumerable<GameweekTeamPlayer>? Players { get; set; }
+
     }
 }

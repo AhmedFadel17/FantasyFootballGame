@@ -1,4 +1,4 @@
-﻿using FantasyFootballGame.Domain.Enums;
+﻿using FantasyFootballGame.Domain.Enums.Players;
 using System.Text.Json.Serialization;
 
 namespace FantasyFootballGame.Domain.Models.Actions

@@ -16,5 +16,11 @@ namespace FantasyFootballGame.Application.DTOs.Players
 
         public int TeamId { get; set; }
 
+        public required string ImageSrc { get; set; }
+        public required string Country { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public int Weight { get; set; }
+        public int Height { get; set; }
+
     }
 }

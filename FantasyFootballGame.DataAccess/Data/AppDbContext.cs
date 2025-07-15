@@ -15,8 +15,11 @@ namespace FantasyFootballGame.DataAccess.Data
         public DbSet<FantasyTeamPlayer> FantasyPlayers { get; set; }
         public DbSet<GameweekTeam> GameweekTeams { get; set; }
         public DbSet<GameweekTeamPlayer> GameweekPlayers { get; set; }
+
         public DbSet<Fixture> Fixtures { get; set; }
         public DbSet<PlayerStat> PlayerStats { get; set; }
+        public DbSet<PlayerGameweekStats> PlayerGameweekStats { get; set; }
+
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<GoalScored> GoalsScored { get; set; }
@@ -35,6 +38,18 @@ namespace FantasyFootballGame.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PlayerGameweekStats>()
+    .HasOne(p => p.Gameweek)
+    .WithMany()
+    .HasForeignKey(p => p.GameweekId)
+    .OnDelete(DeleteBehavior.Restrict); // <--- prevents cascade delete
+
+            modelBuilder.Entity<GameweekTeamPlayer>()
+       .HasOne(gp => gp.GameweekTeam)
+       .WithMany(gt => gt.Players)
+       .HasForeignKey(gp => gp.GameweekTeamId)
+       .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<GameweekTeamPlayer>()
     .HasOne(p => p.FantasyTeamPlayer)
     .WithMany()
@@ -47,11 +62,6 @@ namespace FantasyFootballGame.DataAccess.Data
                 .HasForeignKey(p => p.PlayerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<GameweekTeamPlayer>()
-                .HasOne(p => p.GameweekTeam)
-                .WithMany()
-                .HasForeignKey(p => p.GameweekTeamId)
-                .OnDelete(DeleteBehavior.Cascade); // one allowed cascade
 
             modelBuilder.Entity<Transfer>()
     .HasOne(t => t.PlayerIn)

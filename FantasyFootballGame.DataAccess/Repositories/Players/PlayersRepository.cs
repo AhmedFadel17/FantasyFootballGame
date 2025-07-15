@@ -2,8 +2,8 @@
 using FantasyFootballGame.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using FantasyFootballGame.DataAccess.Extentions.Players;
-using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.DataAccess.Extentions.Common;
+using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.DataAccess.Repositories.Players
 {

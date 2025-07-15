@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FantasyFootballGame.Domain.Enums
+namespace FantasyFootballGame.Domain.Enums.Players
 {
     public enum PlayerSlot
     {

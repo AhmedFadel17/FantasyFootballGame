@@ -4,8 +4,8 @@ using FantasyFootballGame.DataAccess.Repositories.Actions.Goals;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
 using FantasyFootballGame.DataAccess.Repositories.Players;
-using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.DataAccess.Repositories.Actions.Penalties;
+using FantasyFootballGame.Domain.Enums.Players;
 
 public class CreatePenaltyValidator : AbstractValidator<CreatePenaltyDto>
 {

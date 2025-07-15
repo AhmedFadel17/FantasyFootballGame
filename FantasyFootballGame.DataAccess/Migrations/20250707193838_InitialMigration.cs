@@ -21,6 +21,8 @@ namespace FantasyFootballGame.DataAccess.Migrations
                     TotalPoints = table.Column<int>(type: "int", nullable: false),
                     SquadValue = table.Column<double>(type: "float", nullable: false),
                     InTheBank = table.Column<double>(type: "float", nullable: false),
+                    FreeTransfers = table.Column<int>(type: "int", nullable: false),
+                    HasUnlimitedTransfers = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -99,10 +101,8 @@ namespace FantasyFootballGame.DataAccess.Migrations
                     FantasyTeamId = table.Column<int>(type: "int", nullable: false),
                     GameweekId = table.Column<int>(type: "int", nullable: false),
                     TotalPoints = table.Column<int>(type: "int", nullable: false),
-                    TotalTransfers = table.Column<int>(type: "int", nullable: false),
-                    FreeTransfers = table.Column<int>(type: "int", nullable: false),
-                    HasUnlimitedTransfers = table.Column<bool>(type: "bit", nullable: false),
-                    UsedTransfers = table.Column<int>(type: "int", nullable: false),
+                    Chip = table.Column<int>(type: "int", nullable: false),
+                    TransfersMade = table.Column<int>(type: "int", nullable: false),
                     TransferCost = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

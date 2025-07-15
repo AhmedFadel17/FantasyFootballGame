@@ -2,7 +2,9 @@
 
 namespace FantasyFootballGame.DataAccess.Repositories.PlayersStats
 {
-    public interface IPlayersStatsRepository : IBaseRepository<PlayerGameweekForm>
+    public interface IPlayersStatsRepository : IBaseRepository<PlayerStat>
     {
+        Task<IEnumerable<TopStat>> GetTopGoalScorers(int limit);
+
     }
 }

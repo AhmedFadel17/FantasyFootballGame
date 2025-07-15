@@ -1,6 +1,8 @@
 ﻿using FantasyFootballGame.Application.DTOs.Fixtures;
 using FantasyFootballGame.DataAccess.Repositories.Gameweeks;
 using FantasyFootballGame.DataAccess.Repositories.Teams;
+using FantasyFootballGame.Domain.Enums.Fixtures;
+using FantasyFootballGame.Domain.Enums.Players;
 using FluentValidation;
 
 namespace FantasyFootballGame.Application.Validators.Fixtures
@@ -39,6 +41,11 @@ namespace FantasyFootballGame.Application.Validators.Fixtures
             RuleFor(f => f.MatchTime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("Match time must be in the future.")
                 .When(f => f.MatchTime.HasValue);
+
+            RuleFor(p => p.Status)
+                .Must(status => Enum.TryParse<FixtureStatus>(status, false, out _))
+                .WithMessage("Invalid fixture status. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(FixtureStatus))))
+                .When(p => p.Status is not null);
         }
     }
 }

@@ -3,8 +3,8 @@ using FantasyFootballGame.Application.Interfaces.Players;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using FantasyFootballGame.Domain.Enums.User;
-using FantasyFootballGame.Domain.Enums;
 using FantasyFootballGame.API.Factories;
+using FantasyFootballGame.Domain.Enums.Players;
 
 namespace FantasyFootballGame.API.Controllers
 {

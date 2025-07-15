@@ -3,7 +3,7 @@ using FantasyFootballGame.Application.DTOs.GameActions.Penalties.PenaltiesSaves;
 using FantasyFootballGame.DataAccess.Repositories.Actions.Penalties;
 using FantasyFootballGame.DataAccess.Repositories.Players;
 using FantasyFootballGame.DataAccess.Repositories.Fixtures;
-using FantasyFootballGame.Domain.Enums;
+using FantasyFootballGame.Domain.Enums.Players;
 
 public class CreatePenaltySaveValidator : AbstractValidator<CreatePenaltySaveDto>
 {
